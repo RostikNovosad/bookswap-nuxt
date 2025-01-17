@@ -1,8 +1,14 @@
 <template>
-  <div class="flex gap-14">
-    <p>Header component</p>
+  <div class="flex justify-between px-25 py-4 bg-slate-100">
+    <div class="">
+      <nuxt-link to="/">
+        <img src="~/assets/images/logo.png" alt="" width="40" height="40" />
+      </nuxt-link>
+    </div>
     <div class="flex gap-8">
-      <nuxt-link to="/catalog">View All</nuxt-link>
+      <BButton>
+        <nuxt-link to="/catalog">Знайти книгу</nuxt-link>
+      </BButton>
     </div>
   </div>
 </template>

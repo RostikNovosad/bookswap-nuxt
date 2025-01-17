@@ -15,6 +15,12 @@ export default {
       fontFamily: {
         nunitoSans: ['Nunito Sans'],
       },
+      padding: {
+        25: '100px',
+      },
+      boxShadow: {
+        yellow: '0 20px 20px -18px rgba(0, 0, 0, 0.3)',
+      },
     },
   },
   plugins: [],
