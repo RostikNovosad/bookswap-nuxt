@@ -15,21 +15,24 @@ const store = useBurgerMenuStore();
       <img src="~/assets/images/menu.svg" alt="" @click="burgerMenuToogle" />
       <div
         :class="{ 'translate-x-0': store.burgerOpen, 'translate-x-full': !store.burgerOpen }"
-        class="absolute bg-slate-100 h-screen w-screen top-0 right-0 flex flex-col pt-8 px-10 transition-transform duration-300 ease-in-out"
+        class="fixed bg-slate-100 h-screen w-screen top-0 right-0 flex flex-col py-8 px-10 transition-transform duration-300 ease-in-out"
       >
         <div class="flex justify-between items-center">
-          <h3>BookSwap</h3>
+          <img src="~/assets/images/logo.png" alt="" width="40" height="40" />
           <img src="~/assets/images/close.svg" alt="" @click="burgerMenuToogle" />
         </div>
-        <div class="flex flex-col flex-auto gap-8 mt-20">
+        <h3 class="mt-20 text-center font-medium text-4xl">BookSwap 🔁</h3>
+
+        <div class="flex flex-col flex-auto gap-10 mt-20">
           <BButton>
-            <nuxt-link to="/add">Додати книгу</nuxt-link>
+            <nuxt-link to="/add" @click="burgerMenuToogle">Додати книгу</nuxt-link>
           </BButton>
           <BButton>
-            <nuxt-link to="/catalog">Знайти книгу</nuxt-link>
+            <nuxt-link to="/catalog" @click="burgerMenuToogle">Знайти книгу</nuxt-link>
           </BButton>
         </div>
-        <img src="~/assets/images/books-footer.png" alt="" />
+
+        <p class="text-center text-gray-500">© All rights reserved</p>
       </div>
     </div>
     <div class="hidden sm:flex gap-8">
