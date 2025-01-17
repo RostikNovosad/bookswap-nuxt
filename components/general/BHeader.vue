@@ -7,6 +7,9 @@
     </div>
     <div class="flex gap-8">
       <BButton>
+        <nuxt-link to="/add">Додати книгу</nuxt-link>
+      </BButton>
+      <BButton>
         <nuxt-link to="/catalog">Знайти книгу</nuxt-link>
       </BButton>
     </div>
