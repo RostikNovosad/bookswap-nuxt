@@ -8,7 +8,7 @@ const props = defineProps({
 
 <template>
   <div class="flex flex-col items-center justify-center">
-    <img src="/img/books-404.png" class="lg:w-1/2" alt="" />
+    <img src="~/assets/images/books-404.png" class="lg:w-1/2" alt="" />
     <div class="px-10 text-center mt-8 md:mt-0">
       <h1 class="text-yellow text-9xl md:text-10xl font-medium">404</h1>
       <p class="text-darkBlue text-3xl md:text-4xl mt-4">Здається, ви заблукали...</p>
