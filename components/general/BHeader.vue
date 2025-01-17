@@ -1,6 +1,8 @@
 <template>
-  <div>
+  <div class="flex gap-14">
     <p>Header component</p>
-    <nuxt-link to="/catalog">View All</nuxt-link>
+    <div class="flex gap-8">
+      <nuxt-link to="/catalog">View All</nuxt-link>
+    </div>
   </div>
 </template>
