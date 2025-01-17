@@ -2,6 +2,8 @@
 import { burgerMenuToogle } from '@/composables/burgerMenuToogle';
 import { useBurgerMenuStore } from '@/stores/burgerMenu';
 const store = useBurgerMenuStore();
+
+import menuIcon from '~/assets/images/menu.svg';
 </script>
 
 <template>
@@ -12,7 +14,7 @@ const store = useBurgerMenuStore();
       </nuxt-link>
     </div>
     <div class="flex sm:hidden">
-      <img src="~/assets/images/menu.svg" alt="" @click="burgerMenuToogle" />
+      <img :src="menuIcon" alt="" @click="burgerMenuToogle" />
       <div
         :class="{ 'translate-x-0': store.burgerOpen, 'translate-x-full': !store.burgerOpen }"
         class="absolute bg-slate-100 h-screen w-screen top-0 right-0 flex flex-col pt-8 px-10 transition-transform duration-300 ease-in-out"
