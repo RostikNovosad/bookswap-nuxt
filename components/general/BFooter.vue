@@ -17,7 +17,7 @@
       </div>
     </div>
     <div class="flex flex-col md:flex-row justify-between footer-bottom gap-5">
-      <ul class="flex flex-col items-center  md:flex-row text-white md:text-darkBlue font-semibold	md:font-normal gap-8 ">
+      <ul class="flex flex-col items-center  md:flex-row text-white md:text-darkBlue font-medium gap-3 md:gap-8 ">
         <a href="#">Privacy Policy</a>
         <a href="#">Terms of Use</a>
         <a href="#">Sales and Refunds</a>
@@ -42,7 +42,3 @@
 }
 
 </style>
-<script setup lang="ts">
-import BSocialMedia from "~/components/layout/BSocialMedia.vue";
-import BInput from "~/components/forms/BInput.vue";
-</script>

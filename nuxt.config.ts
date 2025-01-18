@@ -8,6 +8,12 @@ export default defineNuxtConfig({
       {
         path: '~/components/general',
         global: true,
+      },{
+        path: '~/components/layout',
+        global: true,
+      },{
+        path: '~/components/forms',
+        global: true,
       },
     ],
   },
