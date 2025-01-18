@@ -6,8 +6,10 @@ export default {
       colors: {
         // Configure your color palette here
         yellow: '#FFCE1A',
+        yellowHover: '#FFD633',
         darkBlue: '#0D0842',
         lightBlue: '#6E6B8E',
+        yellowFooter: '#FEAF38'
       },
       fontSize: {
         '10xl': ['14.25rem', { lineHeight: '1.15' }],
