@@ -1,6 +1,6 @@
 <template>
     <img src="~/assets/images/books-footer.png" alt="books-image" class="block w-full md:hidden">
-  <footer class="relative flex flex-col gap-y-40 px-10 lg:px-25 py-5 bg-yellowFooter md:bg-slate-100">
+  <footer class="md:relative flex flex-col gap-y-40 px-10 lg:px-25 py-5 bg-yellowFooter md:bg-slate-100">
     <div class="hidden md:flex justify-between gap-20">
       <div class="flex flex-col gap-10">
         <img src="~/assets/images/logo.png" width="97" height="90" alt="logo image" />
