@@ -8,6 +8,10 @@
   html {
     font-family: 'Montserrat', sans-serif;
   }
+  body {
+    background-color: #F5FFFF;
+    overflow-x: hidden;
+  }
   a:hover {
     cursor: pointer;
   }

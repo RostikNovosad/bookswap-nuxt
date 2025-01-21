@@ -1,3 +1,6 @@
 <template>
-  <h1>Home Page</h1>
+  <BHeroSection/>
 </template>
+<script setup lang="ts">
+import BHeroSection from "~/components/layout/BHeroSection.vue";
+</script>
