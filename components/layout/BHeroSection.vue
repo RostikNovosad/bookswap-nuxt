@@ -8,10 +8,13 @@
       <img src="~/assets/images/hero.png"  alt="">
     </div>
     <div class="flex items-center gap-4 sm:gap-10">
-      <BButton>Знайти книгу</BButton>
+      <BButton>
+        <nuxt-link to="/catalog">Знайти книгу</nuxt-link>
+      </BButton>
       <BVideoButton>Як це працює</BVideoButton>
     </div>
   </div>
 </template>
 <script setup lang="ts">
+import {burgerMenuToogle} from "~/composables/burgerMenuToogle";
 </script>
