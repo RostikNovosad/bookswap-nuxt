@@ -74,7 +74,7 @@ const swiper = useSwiper(containerRef, {
           :key="idx"
           class="pb-10"
       >
-        <BBookCard  :key="book.id" :id="book.id" :imageUrl="book.imageUrl" :title="book.title" :description="book.description" :condition="book.condition" />
+        <BBookCard  :key="book.id" :id="book.id" :imageUrl="book.imageUrl" :title="book.title" :description="book.description" :condition="book.condition" cardDirection="row" />
       </swiper-slide>
     </swiper-container>
   </ClientOnly>

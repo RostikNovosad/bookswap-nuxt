@@ -3,6 +3,9 @@ export default {
   content: [],
   theme: {
     extend: {
+      screens: {
+        'xs': '480px',
+      },
       colors: {
         // Configure your color palette here
         yellow: '#FFCE1A',
@@ -10,7 +13,8 @@ export default {
         darkBlue: '#0D0842',
         lightBlue: '#6E6B8E',
         yellowFooter: '#FEAF38',
-        lightBlack: '#808080'
+        lightBlack: '#808080',
+        darkGrey: '#EAEAEA'
       },
       fontSize: {
         '10xl': ['14.25rem', { lineHeight: '1.15' }],
