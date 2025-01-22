@@ -9,7 +9,8 @@ export default {
         yellowHover: '#FFD633',
         darkBlue: '#0D0842',
         lightBlue: '#6E6B8E',
-        yellowFooter: '#FEAF38'
+        yellowFooter: '#FEAF38',
+        lightBlack: '#808080'
       },
       fontSize: {
         '10xl': ['14.25rem', { lineHeight: '1.15' }],
