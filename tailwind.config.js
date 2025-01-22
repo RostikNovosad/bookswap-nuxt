@@ -19,6 +19,7 @@ export default {
       },
       padding: {
         25: '100px',
+        30: '120px'
       },
       boxShadow: {
         yellow: '0 20px 20px -18px rgba(0, 0, 0, 0.3)',

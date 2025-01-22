@@ -1,20 +1,20 @@
 <script setup lang="ts">
-import {onMounted} from "vue";
+
 import BBookCard from "~/components/general/BBookCard.vue";
-import {useBooksList} from "@/stores/booksList";
+import { useBooksList } from "@/stores/booksList";
+import BSectionTitle from "~/components/general/BSectionTitle.vue";
 const store = useBooksList();
 const books = store.books;
-onMounted(() => {
-    console.log("books: ", books)
-}
-)
-// Create 10 slides
-const containerRef = ref(null)
-const slides = ref(Array.from({ length: 5 }))
 
+const containerRef = ref(null)
 const swiper = useSwiper(containerRef, {
   effect: 'creative',
   loop: true,
+  autoplay: {
+    delay: 1000,
+    disableOnInteraction: false, // Запобігає зупинці autoplay при взаємодії
+
+  },
   breakpoints: {
     1440: {
       spaceBetween: 40,
@@ -39,9 +39,6 @@ const swiper = useSwiper(containerRef, {
       slidesPerView: 1,
     },
   },
-  autoplay: {
-    delay: 500,
-  },
   creativeEffect: {
     prev: {
       shadow: true,
@@ -53,28 +50,24 @@ const swiper = useSwiper(containerRef, {
     },
   },
 })
-
-onMounted(() => {
-  // Access Swiper instance
-  // Read more about Swiper instance: https://swiperjs.com/swiper-api#methods--properties
-  console.log(swiper.instance)
-})
 </script>
 
 <template>
-  <div class="flex justify-between items-end mb-5">
-    <h2 class="text-darkBlue text-2xl font-medium">Останні додані</h2>
-    <div class="flex gap-4 ">
-      <button @click="swiper.prev()" class="">
-        <img src="~/assets/images/prev.svg" alt="">
-      </button>
+  <section class="pb-10 lg:pb-20 -mx-2.5 px-2.5">
+    <div class="flex justify-between items-end mb-5">
+      <BSectionTitle>Останні додані</BSectionTitle>
 
-      <button @click="swiper.next()" class="">
-        <img src="~/assets/images/next.svg" alt="">
-      </button>
+      <div class="flex gap-4 ">
+        <button @click="swiper.prev()" class="">
+          <img src="~/assets/images/prev.svg" alt="">
+        </button>
+
+        <button @click="swiper.next()" class="">
+          <img src="~/assets/images/next.svg" alt="">
+        </button>
+      </div>
     </div>
-  </div>
-  <ClientOnly>
+    <ClientOnly>
     <swiper-container ref="containerRef" class="flex gap-10 overflow-x-hidden">
       <swiper-slide
           v-for="(book, idx) in books"
@@ -86,9 +79,5 @@ onMounted(() => {
     </swiper-container>
   </ClientOnly>
 
-
+  </section>
 </template>
-
-<style scoped>
-
-</style>
