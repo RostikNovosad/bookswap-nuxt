@@ -1,7 +1,7 @@
 <template>
   <BHeader />
 
-  <main>
+  <main class="px-5 sm:px-10 lg:px-25">
     <slot></slot>
   </main>
   <BFooter />
