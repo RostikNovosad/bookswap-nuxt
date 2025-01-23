@@ -3,22 +3,7 @@
   <h1 class="text-darkBlue text-4xl font-medium text-balance">Бібліотека можливостей: шукай, обмінюйся, читай.</h1>
   <div class="pt-10 flex flex-col md:flex-row gap-5">
     <aside class="flex flex-col gap-4">
-      <h3>Фільтри</h3>
-
-      <ul id="genre" class="bg-darkGrey text-darkBlue px-2.5 py-2 flex flex-col gap-3 w-[200px]">
-        <li @click="genreOpenToogle" class="flex justify-between items-center">
-          {{chosenGenre}}
-          <img src="~/assets/images/drop.svg" alt="">
-        </li>
-        <li v-if="genreOpen" class="flex flex-col gap-3">
-          <li id="fantasy" @click="chooseGenre">Фантастика</li>
-          <li id="detective" @click="chooseGenre">Детектив</li>
-          <li id="novels" @click="chooseGenre">Романи</li>
-          <li id="horrors" @click="chooseGenre">Жахи</li>
-        </li>
-      </ul>
-
-
+      <BFilters/>
     </aside>
 
     <div class="">
@@ -34,29 +19,13 @@
 </template>
 
 <script setup>
-import {onMounted} from "vue";
-import BBookCard from "~/components/general/BBookCard.vue";
+import { onMounted } from "vue";
 import { useBooksList } from "@/stores/booksList";
 const store = useBooksList();
 
 onMounted(() => {
-  store.fetchBooks(); // Завантаження даних при монтуванні
+  store.fetchBooks();
 });
 
 const { books, isLoading } = storeToRefs(store);
-
-const genreOpen = ref(false);
-const genre = ref('');
-const genreOpenToogle = () => {
-  return genreOpen.value = !genreOpen.value;
-}
-const chooseGenre = (e) => {
-  return genre.value = e.target.id;
-}
-const chosenGenre = computed(() => {
-  return genre.value != "" ? genre : "Оберіть жанр";
-})
-watch(genre, (newX) => {
-  console.log(`genre — це ${newX}`)
-})
 </script>

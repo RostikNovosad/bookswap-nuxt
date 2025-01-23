@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import {onMounted} from "vue";
-import BBookCard from "~/components/general/BBookCard.vue";
-import BSectionTitle from "~/components/general/BSectionTitle.vue";
 import { useBooksList } from "@/stores/booksList";
 const store = useBooksList();
 const books = store.books;
@@ -57,7 +55,7 @@ const swiper = useSwiper(containerRef, {
 </script>
 
 <template>
-  <section class="pb-10 lg:pb-20 -mx-2.5 px-2.5">
+  <section class="pb-10 lg:pb-20">
     <div class="flex justify-between items-end mb-5">
       <BSectionTitle>Останні додані</BSectionTitle>
 
