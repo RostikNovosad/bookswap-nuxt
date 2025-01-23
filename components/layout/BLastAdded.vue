@@ -1,10 +1,14 @@
 <script setup lang="ts">
-
+import {onMounted} from "vue";
 import BBookCard from "~/components/general/BBookCard.vue";
-import { useBooksList } from "@/stores/booksList";
 import BSectionTitle from "~/components/general/BSectionTitle.vue";
+import { useBooksList } from "@/stores/booksList";
 const store = useBooksList();
 const books = store.books;
+onMounted(() => {
+  store.fetchBooks(); // Завантаження даних при монтуванні
+});
+
 
 const containerRef = ref(null)
 const swiper = useSwiper(containerRef, {
@@ -67,6 +71,7 @@ const swiper = useSwiper(containerRef, {
         </button>
       </div>
     </div>
+
     <ClientOnly>
     <swiper-container ref="containerRef" class="flex gap-10 overflow-x-hidden">
       <swiper-slide

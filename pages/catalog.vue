@@ -23,7 +23,8 @@
 
     <div class="">
       <BSectionTitle>Всі книги, готові до нового життя</BSectionTitle>
-      <div class="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
+      <div v-if="isLoading">Завантаження...</div>
+      <div v-else class="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 mt-5">
         <BBookCard v-for="book in books" :key="book.id" :id="book.id" :imageUrl="book.imageUrl"  :title="book.title" :description="book.description" :condition="book.condition" cardDirection="col" />
       </div>
     </div>
@@ -33,10 +34,16 @@
 </template>
 
 <script setup>
+import {onMounted} from "vue";
 import BBookCard from "~/components/general/BBookCard.vue";
 import { useBooksList } from "@/stores/booksList";
 const store = useBooksList();
-const books = store.books;
+
+onMounted(() => {
+  store.fetchBooks(); // Завантаження даних при монтуванні
+});
+
+const { books, isLoading } = storeToRefs(store);
 
 const genreOpen = ref(false);
 const genre = ref('');
