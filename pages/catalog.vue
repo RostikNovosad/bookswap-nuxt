@@ -1,6 +1,6 @@
 <template>
   <section class="pt-16 pb-10 lg:pb-30">
-  <h1 class="text-darkBlue text-4xl font-medium text-balance">Бібліотека можливостей: шукай, обмінюйся, читай.</h1>
+  <h1 class="text-darkBlue text-3xl md:text-4xl font-medium text-balance">Бібліотека можливостей: шукай, обмінюйся, читай.</h1>
   <div class="pt-10 flex flex-col md:flex-row gap-5">
     <aside class="flex flex-col gap-4">
       <BFilters/>

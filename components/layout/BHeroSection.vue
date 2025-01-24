@@ -8,9 +8,9 @@
       <img src="~/assets/images/hero.png"  alt="">
     </div>
     <div class="flex items-center gap-4 sm:gap-10">
-      <BButton>
-        <nuxt-link to="/catalog">Знайти книгу</nuxt-link>
-      </BButton>
+        <nuxt-link to="/catalog">
+          <BButton>Знайти книгу</BButton>
+        </nuxt-link>
       <BVideoButton>Про сервіс</BVideoButton>
     </div>
   </section>
