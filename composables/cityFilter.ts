@@ -1,7 +1,6 @@
 export const cityOpen = ref(false);
 export const city = ref('');
 export const cityTitle = ref('');
-
 export const cityOpenToogle = () => {
     return cityOpen.value = !cityOpen.value;
 }

@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import {cityOpenToogle, cityOpen, selectedCity, cityHandler } from  "@/composables/cityFilter"
+import {city, cityOpenToogle, cityOpen, selectedCity, cityHandler } from  "@/composables/cityFilter"
+watch(city, (newX) => {
+  console.log(`city — це ${newX}`)
+})
 </script>
 
 <template>

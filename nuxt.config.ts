@@ -17,5 +17,5 @@ export default defineNuxtConfig({
       },
     ],
   },
-  modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt', 'nuxt-swiper'],
+  modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt', 'nuxt-swiper', '@formkit/auto-animate/nuxt'],
 });
