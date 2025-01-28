@@ -8,6 +8,7 @@ import { language } from "@/composables/languageFilter";
 export const useBooksList =  defineStore('books', {
     state: () => ({
         books: [],
+        bookById: null,
         isLoading: false,
         notFound: false,
     }),
@@ -22,6 +23,14 @@ export const useBooksList =  defineStore('books', {
                 this.notFound = true;
             } finally {
                 this.isLoading = false;
+            }
+        },
+        async fetchBookById(id: number) {
+            try {
+                const response = await axios.get(`https://677034a52ffbd37a63cc63c7.mockapi.io/books?id=${id}`);
+                this.bookById = response.data[0];
+            } catch (error) {
+                console.error('Error fetching book by ID:', error);
             }
         }
     }
