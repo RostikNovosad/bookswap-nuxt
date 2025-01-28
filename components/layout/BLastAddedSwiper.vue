@@ -68,7 +68,7 @@ const swiper = useSwiper(containerRef, {
       </swiper-slide>
     </swiper-container>
   </ClientOnly>
-  <div class="flex gap-4 ">
+  <div class="flex justify-end gap-4 ">
     <button @click="swiper.prev()" class="">
       <img src="~/assets/images/prev.svg" alt="">
     </button>
