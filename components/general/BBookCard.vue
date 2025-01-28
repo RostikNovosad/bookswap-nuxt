@@ -20,8 +20,8 @@ const textWrap = computed(() => {
 </script>
 
 <template>
-  <div class="bg-white p-3 xl:p-4 rounded-2xl	flex gap-6 xl:gap-10 w-full transition duration-300 ease-in hover:shadow-card " :class="cardDirection">
-    <img :src="props.imageUrl" :class="imageSize" class="flex-auto" :alt="props.title">
+  <div class="bg-white p-3 xl:p-4 rounded-2xl	flex gap-6 xl:gap-10  w-full transition duration-300 ease-in hover:shadow-card " :class="cardDirection">
+    <img :src="props.imageUrl" :class="imageSize" class="flex-auto h-[300px] object-contain" :alt="props.title">
     <div class="flex flex-col justify-end" >
       <h5 class="text-darkBlue font-medium mb-4 truncate" :class="textWrap">{{ props.title }}</h5>
       <p class="text-darkBlue text-sm	line-clamp-3 mb-4 opacity-50">{{ props.description }}</p>

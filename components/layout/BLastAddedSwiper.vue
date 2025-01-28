@@ -2,9 +2,9 @@
 import {onMounted} from "vue";
 import { useBooksList } from "@/stores/booksList";
 const store = useBooksList();
-const books = store.books;
-onMounted(() => {
-  store.fetchBooks(); // Завантаження даних при монтуванні
+const books = computed(() => store.books);
+onMounted(async () => {
+  await store.fetchBooks(); // Завантаження даних при монтуванні
 });
 
 
@@ -56,6 +56,8 @@ const swiper = useSwiper(containerRef, {
 
 <template>
   <ClientOnly>
+    <div v-if="books.length === 0">Loading...</div>
+
     <swiper-container ref="containerRef" class="flex gap-10 overflow-x-hidden">
       <swiper-slide
           v-for="(book, idx) in books"
