@@ -3,6 +3,9 @@ import {city, cityOpenToogle, cityOpen, selectedCity, cityHandler } from  "@/com
 watch(city, (newX) => {
   console.log(`city — це ${newX}`)
 })
+import { useCitysList } from "@/stores/citysList";
+const store = useCitysList()
+const citys = store.$state;
 </script>
 
 <template>
@@ -12,10 +15,8 @@ watch(city, (newX) => {
       <img src="~/assets/images/drop.svg" alt="">
     </div>
     <div class="grid transition-all duration-300" :class="cityOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]' ">
-      <div class="overflow-hidden min-h-0 flex flex-col gap-3">
-        <div id="ternopil" @click="cityHandler" class="pt-2">Тернопіль</div>
-        <div id="lviv" @click="cityHandler">Львів</div>
-        <div id="kyiv" @click="cityHandler">Київ</div>
+      <div class="overflow-hidden min-h-0 flex flex-col gap-1">
+        <div v-for="city in citys" :id="city.key" @click="cityHandler" class="pt-2">{{ city.title }}</div>
       </div>
     </div>
   </div>

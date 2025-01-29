@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { languageOpenToogle, selectedLanguage, languageOpen, languageHandler} from "@/composables/languageFilter"
+import {useLanguagesList} from "@/stores/languagesList";
+const store = useLanguagesList()
+const languages = store.$state;
 </script>
 
 <template>
@@ -9,9 +12,8 @@ import { languageOpenToogle, selectedLanguage, languageOpen, languageHandler} fr
       <img src="~/assets/images/drop.svg" alt="">
     </div>
     <div class="grid transition-all duration-300" :class="languageOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]' ">
-      <div class="overflow-hidden min-h-0 flex flex-col gap-3">
-        <div id="ua" @click="languageHandler" class="pt-2">Українська</div>
-        <div id="en" @click="languageHandler">Англійська</div>
+      <div class="overflow-hidden min-h-0 flex flex-col gap-1">
+        <div v-for="language in languages" :id="language.key" @click="languageHandler" class="pt-2">{{language.title}}</div>
       </div>
     </div>
   </div>
