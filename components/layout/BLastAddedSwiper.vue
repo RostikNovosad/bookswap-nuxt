@@ -20,7 +20,7 @@ const swiper = useSwiper(containerRef, {
   breakpoints: {
     1440: {
       spaceBetween: 40,
-      slidesPerView: 2.6,
+      slidesPerView: 2.15,
 
     },
     1280: {
