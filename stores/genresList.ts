@@ -15,6 +15,10 @@ export const useGenresList = defineStore("genres", {
         {
             key: 'horrors',
             title: 'Жахи',
+        },
+        {
+            key: 'other',
+            title: 'Інший...',
         }
     ]
 })

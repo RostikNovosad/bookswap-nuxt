@@ -15,6 +15,10 @@ export const useAuthorsList = defineStore('authors', {
         {
             key: 'george-orwell',
             title: 'Джордж Орвелл',
+        },
+        {
+            key: 'other',
+            title: 'Інший...',
         }
     ]
 })

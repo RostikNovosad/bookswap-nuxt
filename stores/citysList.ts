@@ -11,6 +11,10 @@ export const useCitysList = defineStore("citys", {
         {
             key: 'kyiv',
             title: 'Київ',
+        },
+        {
+            key: 'other',
+            title: 'Інше...',
         }
     ]
 })
