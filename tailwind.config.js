@@ -14,7 +14,8 @@ export default {
         lightBlue: '#6E6B8E',
         yellowFooter: '#FEAF38',
         lightBlack: '#808080',
-        darkGrey: '#EAEAEA'
+        darkGrey: '#EAEAEA',
+        blackOpacity: '#B3B3B2',
       },
       fontSize: {
         '10xl': ['14.25rem', { lineHeight: '1.15' }],
