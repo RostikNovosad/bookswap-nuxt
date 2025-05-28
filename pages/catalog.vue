@@ -16,7 +16,8 @@
           class="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 mt-5"
           v-auto-animate>
           <BBookCard v-for="book in booksList" :key="book.id" :id="Number(book.id)" :imageUrl="book.imageUrl"
-            :title="book.title" :description="book.description" :condition="book.condition" cardDirection="col" />
+            :title="book.title" :description="book.description" :condition="book.condition" :author="book.author"
+            cardDirection="col" />
         </ul>
       </div>
     </div>
