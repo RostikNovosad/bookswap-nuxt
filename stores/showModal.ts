@@ -1,7 +1,7 @@
-import { defineStore } from 'pinia';
+export const useShowModalStore = defineStore('showModal', () => {
+    const showModal = ref(false)
 
-export const useShowModalStore = defineStore('showModal', {
-    state: () => ({
-        showModal: false,
-    }),
+    return {
+        showModal
+    }
 });

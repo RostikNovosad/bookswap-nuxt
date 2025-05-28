@@ -6,91 +6,111 @@
     <form @submit.prevent ref="form" class="px-10 pt-10 pb-16 flex flex-col gap-5">
       <div class="flex flex-col gap-1">
         <label for="title">Назва</label>
-        <input type="text" name="title" id="title" @input="titleHandler" placeholder="Назва книги" minlength="4" maxlength="50" class="w-full py-2 pl-6 px-3 font-medium border border-yellow rounded-lg	outline-none	truncate"/>
+        <input type="text" name="title" id="title" @input="titleHandler" placeholder="Назва книги" minlength="4"
+          maxlength="50"
+          class="w-full py-2 pl-6 px-3 font-medium border border-yellow rounded-lg	outline-none	truncate" />
       </div>
 
       <div class="flex flex-col gap-1">
         <label for="author">Автор</label>
-        <select class="w-full py-2 pl-6 px-3 font-medium text-black border border-yellow rounded-lg	outline-none truncate" @change="authorHandler">
+        <select
+          class="w-full py-2 pl-6 px-3 font-medium text-black border border-yellow rounded-lg	outline-none truncate"
+          @change="authorHandler">
           <option>Оберіть автора</option>
-          <option v-for="author in authors" :id="author.key" :value="author.key">{{author.title}}</option>
+          <option v-for="author in authors" :id="author.key" :value="author.key">{{ author.title }}</option>
         </select>
       </div>
 
       <div class="flex flex-col gap-1">
         <label for="genre">Жанр</label>
-        <select class="w-full py-2 pl-6 px-3 font-medium text-black border border-yellow rounded-lg	outline-none truncate" @change="genreHandler">
+        <select
+          class="w-full py-2 pl-6 px-3 font-medium text-black border border-yellow rounded-lg	outline-none truncate"
+          @change="genreHandler">
           <option>Оберіть жанр</option>
-          <option v-for="genre in genres" :id="genre.key" :value="genre.key">{{genre.title}}</option>
+          <option v-for="genre in genres" :id="genre.key" :value="genre.key">{{ genre.title }}</option>
         </select>
       </div>
 
       <div class="flex flex-col gap-1">
         <label for="description">Опис</label>
-        <textarea name="description" id="description" @input="descriptionHandler" class="overlay-scroll custom-scroll w-full py-2 pl-6 px-3 font-medium text-black border border-yellow rounded-lg	outline-none resize-none overflow-y-auto	" rows="6"></textarea>
+        <textarea name="description" id="description" @input="descriptionHandler"
+          class="overlay-scroll custom-scroll w-full py-2 pl-6 px-3 font-medium text-black border border-yellow rounded-lg	outline-none resize-none overflow-y-auto	"
+          rows="6"></textarea>
       </div>
 
       <div class="flex flex-col gap-1">
-        <label for="condition">Стан: {{conditionShow}}</label>
-        <input type="range" @input="conditionHandler" min="1" max="10" class="slider w-full py-2 pl-6 px-3 font-medium text-black border border-yellow rounded-lg	outline-none">
+        <label for="condition">Стан: {{ conditionShow }}</label>
+        <input type="range" @input="conditionHandler" min="1" max="10"
+          class="slider w-full py-2 pl-6 px-3 font-medium text-black border border-yellow rounded-lg	outline-none">
       </div>
 
       <div class="flex flex-col gap-1">
         <label>Мова</label>
-        <select class="w-full py-2 pl-6 px-3 font-medium text-black border border-yellow rounded-lg	outline-none truncate" @change="languageHandler">
+        <select
+          class="w-full py-2 pl-6 px-3 font-medium text-black border border-yellow rounded-lg	outline-none truncate"
+          @change="languageHandler">
           <option>Оберіть мову</option>
-          <option v-for="language in languages" :id="language.key" :value="language.key">{{language.title}}</option>
+          <option v-for="language in languages" :id="language.key" :value="language.key">{{ language.title }}</option>
         </select>
       </div>
 
       <div class="flex flex-col gap-1">
         <label>Місто</label>
-        <select class="w-full py-2 pl-6 px-3 font-medium text-black border border-yellow rounded-lg	outline-none truncate" @change="cityHandler">
+        <select
+          class="w-full py-2 pl-6 px-3 font-medium text-black border border-yellow rounded-lg	outline-none truncate"
+          @change="cityHandler">
           <option>Оберіть місто</option>
-          <option v-for="city in citys" :id="city.key" :value="city.key" >{{city.title}}</option>
+          <option v-for="city in citys" :id="city.key" :value="city.key">{{ city.title }}</option>
         </select>
       </div>
 
       <div class="flex flex-col gap-1">
         <label for="contact">Контакт</label>
-        <input type="text" name="contact" id="contact" @input="contactHandler" placeholder="Введіть свій телеграм" minlength="4" maxlength="50" class="w-full py-2 pl-6 px-3 font-medium border border-yellow rounded-lg	outline-none	truncate"/>
+        <input type="text" name="contact" id="contact" @input="contactHandler" placeholder="Введіть свій телеграм"
+          minlength="4" maxlength="50"
+          class="w-full py-2 pl-6 px-3 font-medium border border-yellow rounded-lg	outline-none	truncate" />
       </div>
 
       <div v-if="unCompleteForm" class="flex flex-col gap-1">
         <p class="text-red-500	text-center">Форма заповнена не повністю!</p>
       </div>
 
-<!--      <div class="">-->
-<!--        <label for="photo">Фото</label>-->
-<!--        <input type="file" class="w-full py-2 pl-6 px-3 font-medium text-black border border-yellow rounded-lg outline-none" accept="image/png, image/jpeg">-->
-<!--      </div>-->
+      <!--      <div class="">-->
+      <!--        <label for="photo">Фото</label>-->
+      <!--        <input type="file" class="w-full py-2 pl-6 px-3 font-medium text-black border border-yellow rounded-lg outline-none" accept="image/png, image/jpeg">-->
+      <!--      </div>-->
 
-        <BButton @click="checkForm">Відправити</BButton>
+      <BButton @click="checkForm">Відправити</BButton>
 
     </form>
   </div>
 
-  <div v-if="store.showModal" class="h-screen w-screen absolute top-0 bottom-0 right-0 left-0  z-50	px-5 py-10 flex justify-center items-center modal ">
-      <div class="bg-white rounded-3xl py-10 px-5 flex flex-col gap-4 justify-center items-center">
-        <p v-if="successPost">Вашу книгу було успішно додано!</p>
-        <p v-if="errorPost">Упс..! сталася помилка, спробуйте ще раз!</p>
-        <nuxt-link to="/">
-          <BButton @click="closeModal">На головну</BButton>
-        </nuxt-link>
-      </div>
+  <div v-if="store.showModal"
+    class="h-screen w-screen absolute top-0 bottom-0 right-0 left-0  z-50	px-5 py-10 flex justify-center items-center modal ">
+    <div class="bg-white rounded-3xl py-10 px-5 flex flex-col gap-4 justify-center items-center">
+      <p v-if="successPost">Вашу книгу було успішно додано!</p>
+      <p v-if="errorPost">Упс..! сталася помилка, спробуйте ще раз!</p>
+      <nuxt-link to="/">
+        <BButton @click="closeModal">На головну</BButton>
+      </nuxt-link>
+    </div>
   </div>
 </template>
 <script setup lang="ts">
-import { getAuthors, getGenrers, getCitys, getLanguages } from "@/composables/addBook";
 import { useShowModalStore } from "@/stores/showModal";
 const store = useShowModalStore();
 import axios from "axios";
-import {watch} from "vue";
-import {fa} from "cronstrue/dist/i18n/locales/fa";
-const authors = getAuthors();
-const genres = getGenrers();
-const citys = getCitys();
-const languages = getLanguages();
+import { watch } from "vue";
+
+const { genresList } = storeToRefs(useGenresListStore())
+const { authorsList } = storeToRefs(useAuthorsListStore())
+const { citysList } = storeToRefs(useCitysListStore())
+const { languagesList } = storeToRefs(useLanguagesListStore())
+
+const genres = genresList.value;
+const authors = authorsList.value;
+const citys = citysList.value;
+const languages = languagesList.value;
 
 const title = ref();
 const author = ref();
@@ -129,9 +149,9 @@ const contactHandler = (e) => {
   return contact.value = e.target.value;
 }
 const checkForm = () => {
-  if( title.value && description.value && condition.value && genre.value && author.value && city.value && language.value && contact.value ) {
+  if (title.value && description.value && condition.value && genre.value && author.value && city.value && language.value && contact.value) {
     postBook()
-  } else  {
+  } else {
     unCompleteForm.value = true;
   }
 }
@@ -150,17 +170,17 @@ function postBook() {
     language: language.value,
     contact: contact.value
   })
-      .then(function (response) {
-        console.log(response);
-        window.scrollTo(0,0);
-        store.showModal = true;
-        successPost.value = true;
-      })
-      .catch(function (error) {
-        console.log(error);
-        store.showModal = true;
-        errorPost.value = true;
-      });
+    .then(function (response) {
+      console.log(response);
+      window.scrollTo(0, 0);
+      store.showModal = true;
+      successPost.value = true;
+    })
+    .catch(function (error) {
+      console.log(error);
+      store.showModal = true;
+      errorPost.value = true;
+    });
 }
 const conditionShow = computed(() => {
   return condition.value ? condition.value : "Не обрано";
@@ -179,22 +199,27 @@ watch(() => store.showModal, (newValue) => {
 .modal {
   background: rgba(0, 0, 0, 0.5);
 }
+
 .overlay-scroll {
   overflow-y: overlay;
 }
+
 .custom-scroll::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
+
 .custom-scroll::-webkit-scrollbar-thumb {
   background-color: #00000000;
   border: 5px solid #00000040;
   border-radius: 24px;
   box-shadow: 4px 0px 0px 4px #00000040 inset;
 }
+
 .custom-scroll::-webkit-scrollbar-track {
   background: transparent;
 }
+
 .slider {
   -webkit-appearance: none;
   width: 100%;
@@ -237,6 +262,7 @@ input::file-selector-button {
   border-radius: 8px;
   transition: all 0.3s ease-in;
 }
+
 input::file-selector-button:hover {
   color: #FFD633;
   background-color: #fff;

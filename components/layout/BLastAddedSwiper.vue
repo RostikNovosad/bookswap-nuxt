@@ -1,20 +1,20 @@
 <script setup lang="ts">
-import {onMounted} from "vue";
-import { useBooksList } from "@/stores/booksList";
-const store = useBooksList();
-const books = computed(() => store.books);
+const { getBooks } = useBooksListStore()
+const { booksList } = storeToRefs(useBooksListStore())
+
+const books = computed(() => booksList.value);
 onMounted(async () => {
-  await store.fetchBooks(); // Завантаження даних при монтуванні
+  await getBooks();
 });
 
 
 const containerRef = ref(null)
 const swiper = useSwiper(containerRef, {
   effect: 'creative',
-  loop: true,
+  loop: books.value.length > 1 ? true : false,
   autoplay: {
     delay: 1000,
-    disableOnInteraction: false, // Запобігає зупинці autoplay при взаємодії
+    disableOnInteraction: false,
 
   },
   breakpoints: {
@@ -56,15 +56,12 @@ const swiper = useSwiper(containerRef, {
 
 <template>
   <ClientOnly>
-    <div v-if="books.length === 0">Loading...</div>
+    <div v-if="booksList.length === 0">Loading...</div>
 
     <swiper-container ref="containerRef" class="flex gap-10 overflow-x-hidden">
-      <swiper-slide
-          v-for="(book, idx) in books"
-          :key="idx"
-          class="pb-10"
-      >
-        <BBookCard  :key="book.id" :id="book.id" :imageUrl="book.imageUrl" :title="book.title" :description="book.description" :condition="book.condition" cardDirection="row" />
+      <swiper-slide v-for="(book, idx) in books" :key="idx" class="pb-10">
+        <BBookCard :key="book.id" :id="Number(book.id)" :imageUrl="book.imageUrl" :title="book.title"
+          :description="book.description" :condition="book.condition" cardDirection="row" />
       </swiper-slide>
     </swiper-container>
   </ClientOnly>
@@ -79,6 +76,4 @@ const swiper = useSwiper(containerRef, {
   </div>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

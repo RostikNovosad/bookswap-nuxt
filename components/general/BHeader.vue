@@ -13,10 +13,8 @@ const store = useBurgerMenuStore();
     </div>
     <div class="flex sm:hidden">
       <img src="~/assets/images/menu.svg" alt="" @click="burgerMenuToogle" />
-      <div
-        :class="{ 'translate-x-0': store.burgerOpen, 'translate-x-full': !store.burgerOpen }"
-        class="fixed bg-slate-100 h-screen w-screen top-0 right-0 flex flex-col py-8 px-10 transition-transform duration-300 ease-in-out z-50	"
-      >
+      <div :class="{ 'translate-x-0': store.burgerOpen, 'translate-x-full': !store.burgerOpen }"
+        class="fixed bg-slate-100 h-screen w-screen top-0 right-0 flex flex-col py-8 px-10 transition-transform duration-300 ease-in-out z-50	">
         <div class="flex justify-between items-center">
           <img src="~/assets/images/logo.png" alt="" width="40" height="40" />
           <img src="~/assets/images/close.svg" alt="" @click="burgerMenuToogle" />

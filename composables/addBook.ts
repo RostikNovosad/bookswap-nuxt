@@ -1,24 +1,21 @@
-import { useAuthorsList } from "@/stores/authorsList";
-import { useGenresList } from "@/stores/genresList";
-import { useCitysList } from "@/stores/citysList";
-import { useLanguagesList } from "@/stores/languagesList";
+const { genresList } = storeToRefs(useGenresListStore())
+const { authorsList } = storeToRefs(useAuthorsListStore())
+const { citysList } = storeToRefs(useCitysListStore())
+const { languagesList } = storeToRefs(useLanguagesListStore())
+
 
 export function getAuthors() {
-    const storeAuthors = useAuthorsList();
-    return storeAuthors.$state;
+    const authors = authorsList.value;
 }
 
 export function getGenrers() {
-    const storeGenres = useGenresList();
-    return storeGenres.$state;
+    const genres = genresList.value;
 }
 
 export function getCitys() {
-    const storeCitys = useCitysList();
-    return storeCitys.$state;
+    const citys = citysList.value;
 }
 
 export function getLanguages() {
-    const storeLanguages = useLanguagesList();
-    return storeLanguages.$state;
+    const languages = languagesList.value;
 }
