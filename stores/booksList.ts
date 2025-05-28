@@ -5,6 +5,8 @@ import { city } from "@/composables/cityFilter";
 import { language } from "@/composables/languageFilter";
 
 export const useBooksListStore = defineStore('books', () => {
+  const url = useRuntimeConfig().public.baseURL
+
   const booksList = ref([])
   const bookById = ref()
   const isLoading = ref(false)
@@ -14,7 +16,7 @@ export const useBooksListStore = defineStore('books', () => {
     try {
       notFound.value = false;
       isLoading.value = true;
-      const response = await axios.get(`https://677034a52ffbd37a63cc63c7.mockapi.io/books?genre=${genre.value}&author=${author.value}&city=${city.value}&language=${language.value}`);
+      const response = await axios.get(`${url}/books?genre=${genre.value}&author=${author.value}&city=${city.value}&language=${language.value}`);
       booksList.value = response.data;
     }
     catch (error) {
@@ -26,12 +28,31 @@ export const useBooksListStore = defineStore('books', () => {
 
   const getBookById = async (id: number) => {
     try {
-      const response = await axios.get(`https://677034a52ffbd37a63cc63c7.mockapi.io/books?id=${id}`);
+      const response = await axios.get(`${url}/books?id=${id}`);
       bookById.value = response.data[0];
     } catch (error) {
       console.error('Error fetching book by ID:', error);
     }
   }
+
+  const createBook = async (bookData: {
+    imageUrl: string;
+    title: string;
+    description: string;
+    condition: number;
+    genre: string;
+    author: string;
+    city: string;
+    language: string;
+    contact: string;
+  }) => {
+    try {
+      const response = await axios.post(`${url}/books`, bookData);
+      console.log('Book posted successfully:', response.data);
+    } catch (error: any) {
+      console.error('Failed to post book:', error);
+    }
+  };
 
   return {
     booksList,
@@ -39,7 +60,8 @@ export const useBooksListStore = defineStore('books', () => {
     isLoading,
     notFound,
     getBooks,
-    getBookById
+    getBookById,
+    createBook
   }
 })
 

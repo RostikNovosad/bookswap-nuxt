@@ -6,69 +6,73 @@
     <form @submit.prevent ref="form" class="px-10 pt-10 pb-16 flex flex-col gap-5">
       <div class="flex flex-col gap-1">
         <label for="title">Назва</label>
-        <input type="text" name="title" id="title" @input="titleHandler" placeholder="Назва книги" minlength="4"
+        <input type="text" name="title" id="title" v-model="title" placeholder="Назва книги" minlength="4"
           maxlength="50"
-          class="w-full py-2 pl-6 px-3 font-medium border border-yellow rounded-lg	outline-none	truncate" />
+          class="w-full py-2 pl-6 px-3 font-medium border border-yellow rounded-lg  outline-none  truncate" />
       </div>
 
       <div class="flex flex-col gap-1">
         <label for="author">Автор</label>
         <select
-          class="w-full py-2 pl-6 px-3 font-medium text-black border border-yellow rounded-lg	outline-none truncate"
-          @change="authorHandler">
-          <option>Оберіть автора</option>
-          <option v-for="author in authors" :id="author.key" :value="author.key">{{ author.title }}</option>
+          class="w-full py-2 pl-6 px-3 font-medium text-black border border-yellow rounded-lg outline-none truncate"
+          v-model="author">
+          <option :value="undefined">Оберіть автора</option>
+          <option v-for="authorOption in authors" :key="authorOption.key" :value="authorOption.key">{{
+            authorOption.title }}</option>
         </select>
       </div>
 
       <div class="flex flex-col gap-1">
         <label for="genre">Жанр</label>
         <select
-          class="w-full py-2 pl-6 px-3 font-medium text-black border border-yellow rounded-lg	outline-none truncate"
-          @change="genreHandler">
-          <option>Оберіть жанр</option>
-          <option v-for="genre in genres" :id="genre.key" :value="genre.key">{{ genre.title }}</option>
+          class="w-full py-2 pl-6 px-3 font-medium text-black border border-yellow rounded-lg outline-none truncate"
+          v-model="genre">
+          <option :value="undefined">Оберіть жанр</option>
+          <option v-for="genreOption in genres" :key="genreOption.key" :value="genreOption.key">{{ genreOption.title }}
+          </option>
         </select>
       </div>
 
       <div class="flex flex-col gap-1">
         <label for="description">Опис</label>
-        <textarea name="description" id="description" @input="descriptionHandler"
-          class="overlay-scroll custom-scroll w-full py-2 pl-6 px-3 font-medium text-black border border-yellow rounded-lg	outline-none resize-none overflow-y-auto	"
+        <textarea name="description" id="description" v-model="description"
+          class="overlay-scroll custom-scroll w-full py-2 pl-6 px-3 font-medium text-black border border-yellow rounded-lg  outline-none resize-none overflow-y-auto  "
           rows="6"></textarea>
       </div>
 
       <div class="flex flex-col gap-1">
         <label for="condition">Стан: {{ conditionShow }}</label>
-        <input type="range" @input="conditionHandler" min="1" max="10"
-          class="slider w-full py-2 pl-6 px-3 font-medium text-black border border-yellow rounded-lg	outline-none">
+        <input type="range" id="condition" v-model="condition" min="1" max="10"
+          class="slider w-full py-2 pl-6 px-3 font-medium text-black border border-yellow rounded-lg  outline-none">
       </div>
 
       <div class="flex flex-col gap-1">
         <label>Мова</label>
         <select
-          class="w-full py-2 pl-6 px-3 font-medium text-black border border-yellow rounded-lg	outline-none truncate"
-          @change="languageHandler">
-          <option>Оберіть мову</option>
-          <option v-for="language in languages" :id="language.key" :value="language.key">{{ language.title }}</option>
+          class="w-full py-2 pl-6 px-3 font-medium text-black border border-yellow rounded-lg outline-none truncate"
+          v-model="language">
+          <option :value="undefined">Оберіть мову</option>
+          <option v-for="languageOption in languages" :key="languageOption.key" :value="languageOption.key">{{
+            languageOption.title }}</option>
         </select>
       </div>
 
       <div class="flex flex-col gap-1">
         <label>Місто</label>
         <select
-          class="w-full py-2 pl-6 px-3 font-medium text-black border border-yellow rounded-lg	outline-none truncate"
-          @change="cityHandler">
-          <option>Оберіть місто</option>
-          <option v-for="city in citys" :id="city.key" :value="city.key">{{ city.title }}</option>
+          class="w-full py-2 pl-6 px-3 font-medium text-black border border-yellow rounded-lg outline-none truncate"
+          v-model="city">
+          <option :value="undefined">Оберіть місто</option>
+          <option v-for="cityOption in citys" :key="cityOption.key" :value="cityOption.key">{{ cityOption.title }}
+          </option>
         </select>
       </div>
 
       <div class="flex flex-col gap-1">
         <label for="contact">Контакт</label>
-        <input type="text" name="contact" id="contact" @input="contactHandler" placeholder="Введіть свій телеграм"
+        <input type="text" name="contact" id="contact" v-model="contact" placeholder="Введіть свій телеграм"
           minlength="4" maxlength="50"
-          class="w-full py-2 pl-6 px-3 font-medium border border-yellow rounded-lg	outline-none	truncate" />
+          class="w-full py-2 pl-6 px-3 font-medium border border-yellow rounded-lg  outline-none  truncate" />
       </div>
 
       <div v-if="unCompleteForm" class="flex flex-col gap-1">
@@ -106,6 +110,7 @@ const { genresList } = storeToRefs(useGenresListStore())
 const { authorsList } = storeToRefs(useAuthorsListStore())
 const { citysList } = storeToRefs(useCitysListStore())
 const { languagesList } = storeToRefs(useLanguagesListStore())
+const { createBook } = useBooksListStore()
 
 const genres = genresList.value;
 const authors = authorsList.value;
@@ -124,33 +129,9 @@ const successPost = ref(false);
 const errorPost = ref(false);
 const unCompleteForm = ref(false);
 
-const titleHandler = (e) => {
-  return title.value = e.target.value;
-}
-const authorHandler = (e) => {
-  return author.value = e.target.value;
-}
-const genreHandler = (e) => {
-  return genre.value = e.target.value;
-}
-const descriptionHandler = (e) => {
-  return description.value = e.target.value;
-}
-const conditionHandler = (e) => {
-  return condition.value = e.target.value;
-}
-const languageHandler = (e) => {
-  return language.value = e.target.value;
-}
-const cityHandler = (e) => {
-  return city.value = e.target.value;
-}
-const contactHandler = (e) => {
-  return contact.value = e.target.value;
-}
 const checkForm = () => {
   if (title.value && description.value && condition.value && genre.value && author.value && city.value && language.value && contact.value) {
-    postBook()
+    handlePostBook()
   } else {
     unCompleteForm.value = true;
   }
@@ -158,9 +139,12 @@ const checkForm = () => {
 const closeModal = () => {
   return store.showModal = false;
 }
-function postBook() {
-  axios.post('https://677034a52ffbd37a63cc63c7.mockapi.io/books', {
-    imageUrl: '/images/books/book-post.jpg',
+
+async function handlePostBook() {
+  const randomNumber = Math.floor(Math.random() * 9) + 1;
+
+  const bookData = {
+    imageUrl: `/images/books/book-${randomNumber}.jpg`,
     title: title.value,
     description: description.value,
     condition: condition.value,
@@ -169,19 +153,20 @@ function postBook() {
     city: city.value,
     language: language.value,
     contact: contact.value
-  })
-    .then(function (response) {
-      console.log(response);
-      window.scrollTo(0, 0);
-      store.showModal = true;
-      successPost.value = true;
-    })
-    .catch(function (error) {
-      console.log(error);
-      store.showModal = true;
-      errorPost.value = true;
-    });
+  };
+
+  await createBook(bookData);
+
+  title.value = '';
+  description.value = '';
+  condition.value = 0;
+  genre.value = '';
+  author.value = '';
+  city.value = '';
+  language.value = '';
+  contact.value = '';
 }
+
 const conditionShow = computed(() => {
   return condition.value ? condition.value : "Не обрано";
 })
