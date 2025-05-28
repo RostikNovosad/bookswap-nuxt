@@ -22,24 +22,24 @@ const store = useBurgerMenuStore();
         <h3 class="mt-20 text-center font-medium text-4xl">BookSwap 🔁</h3>
 
         <div class="flex flex-col flex-auto gap-10 mt-20">
-          <BButton>
-            <nuxt-link to="/add" @click="burgerMenuToogle">Додати книгу</nuxt-link>
-          </BButton>
-          <BButton>
-            <nuxt-link to="/catalog" @click="burgerMenuToogle">Знайти книгу</nuxt-link>
-          </BButton>
+          <nuxt-link to="/add" @click="burgerMenuToogle">
+            <BButton class="w-full"> Додати книгу </BButton>
+          </nuxt-link>
+          <nuxt-link to="/catalog" @click="burgerMenuToogle">
+            <BButton class="w-full"> Знайти книгу </BButton>
+          </nuxt-link>
         </div>
 
         <p class="text-center text-gray-500">© All rights reserved</p>
       </div>
     </div>
     <div class="hidden sm:flex gap-8">
-      <BButton>
-        <nuxt-link to="/add">Додати книгу</nuxt-link>
-      </BButton>
-      <BButton>
-        <nuxt-link to="/catalog">Знайти книгу</nuxt-link>
-      </BButton>
+      <nuxt-link to="/add">
+        <BButton> Додати книгу </BButton>
+      </nuxt-link>
+      <nuxt-link to="/catalog">
+        <BButton> Знайти книгу </BButton>
+      </nuxt-link>
     </div>
   </div>
 </template>
