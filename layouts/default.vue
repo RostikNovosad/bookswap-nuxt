@@ -1,13 +1,11 @@
 <template>
   <div class="wrapper flex flex-col min-h-screen">
-
-  <BHeader />
-  <main class="px-5 sm:px-10 lg:px-25 flex-auto">
-    <slot></slot>
-  </main>
-  <BFooter />
+    <BHeader />
+    <main class="px-5 sm:px-10 lg:px-25 flex flex-col flex-auto">
+      <slot></slot>
+    </main>
+    <BFooter />
   </div>
-
 </template>
 <script setup lang="ts">
 import { watch } from "vue";

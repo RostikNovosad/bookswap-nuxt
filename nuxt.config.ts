@@ -11,6 +11,10 @@ export default defineNuxtConfig({
     }
   },
 
+  plugins: [
+    '~/plugins/firebase.client.js'
+  ],
+
   components: {
     dirs: [
       {
@@ -24,8 +28,6 @@ export default defineNuxtConfig({
         global: true,
       },
     ],
-
-
   },
   modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt', 'nuxt-swiper', '@formkit/auto-animate/nuxt'],
 });
