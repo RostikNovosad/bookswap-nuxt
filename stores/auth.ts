@@ -20,6 +20,8 @@ export const authStore = defineStore('auth', () => {
         await createUserWithEmailAndPassword($auth, email, password);
         alert('Реєстрація успішна! Тепер ви можете увійти.');
         isRegistering.value = false;
+        router.push('/profile');
+
       } else {
         await signInWithEmailAndPassword($auth, email, password);
         userAuthStatus.value = true;
