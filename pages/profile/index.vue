@@ -14,7 +14,7 @@
       <div class="mt-8 flex flex-col gap-4">
 
         <p class="text-darkBlue text-xl font-medium">Дякуємо, що обрали Bookswap!</p>
-        <p class="text-darkBlue   ">Скоро тут зʼявиться більше інформації!</p>
+        <p class="text-darkBlue">Скоро тут зʼявиться більше інформації!</p>
       </div>
     </div>
 

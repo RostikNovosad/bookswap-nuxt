@@ -1,4 +1,3 @@
-// middleware/auth.js
 export default defineNuxtRouteMiddleware((to, from) => {
   const { $auth } = useNuxtApp();
   const user = $auth.currentUser;

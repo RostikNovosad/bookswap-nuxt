@@ -5,7 +5,7 @@ export const authStore = defineStore('auth', () => {
 
   const { $auth } = useNuxtApp();
   const router = useRouter();
-  const user = ref<FirebaseUser | null>(null); // <--- ЗМІНЕНО: тепер це FirebaseUser | null
+  const user = ref<FirebaseUser | null>(null);
 
   const error = ref(null);
   const isRegistering = ref(false)

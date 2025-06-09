@@ -1,12 +1,7 @@
 <script setup lang="ts">
-import { useRouter } from 'vue-router';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
-
-const { user, error, isRegistering } = storeToRefs(authStore())
+const { error, isRegistering } = storeToRefs(authStore())
 
 const { handleLoginButton } = authStore()
-const { $auth } = useNuxtApp();
-const router = useRouter();
 
 const email = ref('');
 const password = ref('');
