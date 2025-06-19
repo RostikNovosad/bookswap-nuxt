@@ -4,6 +4,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   ssr: false,
 
+  modules: ['@pinia/nuxt', '@nuxtjs/tailwindcss', 'nuxt-swiper', '@formkit/auto-animate/nuxt'],
 
   runtimeConfig: {
     public: {
@@ -35,5 +36,4 @@ export default defineNuxtConfig({
       },
     ],
   },
-  modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt', 'nuxt-swiper', '@formkit/auto-animate/nuxt'],
 });

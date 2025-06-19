@@ -26,7 +26,6 @@ export const authStore = defineStore('auth', () => {
         await signInWithEmailAndPassword($auth, email, password);
         userAuthStatus.value = true;
         router.push('/profile');
-
       }
     } catch (err) {
       console.error('Auth error:', err.code, err.message);

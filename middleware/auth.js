@@ -2,8 +2,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
   const { $auth } = useNuxtApp();
   const user = $auth.currentUser;
 
-  if (!user && to.path === '/profile/' || '/profile') {
-    console.log("user: ", user);
+  if (!user && to.path.startsWith('/profile')) {
     return navigateTo('/login');
   }
 

@@ -2,16 +2,18 @@
 const { getBooks } = useBooksListStore()
 const { booksList } = storeToRefs(useBooksListStore())
 
-const books = computed(() => booksList.value);
+const books = ref();
+
 onMounted(async () => {
   await getBooks();
+  books.value = booksList.value;
 });
 
 
 const containerRef = ref(null)
 const swiper = useSwiper(containerRef, {
   effect: 'creative',
-  loop: books.value.length > 1 ? true : false,
+  loop: books.length > 1 ? true : false,
   autoplay: {
     delay: 1000,
     disableOnInteraction: false,
