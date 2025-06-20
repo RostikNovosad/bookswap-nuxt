@@ -1,4 +1,4 @@
-export const useLanguagesListStore = defineStore('languages', () => {
+export const useLanguagesListStore = defineStore('languagesL', () => {
   const languagesList = ref([
     {
       key: 'ua',

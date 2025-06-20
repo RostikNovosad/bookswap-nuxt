@@ -1,4 +1,4 @@
-export const useCitysListStore = defineStore("citys", () => {
+export const useCitysListStore = defineStore("citysL", () => {
   const citysList = ref([
     {
       key: 'ternopil',

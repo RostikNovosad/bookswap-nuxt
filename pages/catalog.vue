@@ -46,7 +46,7 @@ const { getCitys } = useCitysStore()
 const { citysDB } = storeToRefs(useCitysStore())
 
 const { getAuthors } = useAuthorsStore()
-const { authorsDB } = storeToRefs(useAuthorsStore())
+const { authorsDB, isInitialized } = storeToRefs(useAuthorsStore())
 
 const { getGenres } = useGenresStore()
 const { genresDB } = storeToRefs(useGenresStore())

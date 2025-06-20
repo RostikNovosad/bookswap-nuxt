@@ -1,4 +1,4 @@
-export const useGenresListStore = defineStore("genres", () => {
+export const useGenresListStore = defineStore("genresL", () => {
   const genresList = ref([
     {
       key: 'fantasy',

@@ -1,4 +1,4 @@
-export const useAuthorsListStore = defineStore('authors', () => {
+export const useAuthorsListStore = defineStore('authorsL', () => {
   const authorsList = ref([
     {
       key: 'stephen-king',

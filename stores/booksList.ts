@@ -4,7 +4,7 @@ import { author } from "@/composables/authorFilter";
 import { city } from "@/composables/cityFilter";
 import { language } from "@/composables/languageFilter";
 
-export const useBooksListStore = defineStore('books', () => {
+export const useBooksListStore = defineStore('booksL', () => {
   const url = useRuntimeConfig().public.baseURL
 
   const booksList = ref([])
