@@ -1,4 +1,4 @@
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, query, orderBy } from 'firebase/firestore';
 
 export const useLanguagesStore = defineStore('languages', () => {
   const { $db } = useNuxtApp();
@@ -6,7 +6,12 @@ export const useLanguagesStore = defineStore('languages', () => {
 
   const getLanguages = async () => {
     try {
-      const querySnapshot = await getDocs(collection($db, 'languages'));
+      const languagesCollection = collection($db, 'languages');
+
+      const q = query(languagesCollection, orderBy('id', 'asc'));
+
+      const querySnapshot = await getDocs(q);
+
       languagesDB.value = querySnapshot.docs.map(doc => doc.data());
     } catch (err) { }
   }

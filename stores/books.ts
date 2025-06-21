@@ -1,4 +1,4 @@
-import { collection, getDocs, query, where, QueryConstraint } from 'firebase/firestore';
+import { collection, getDocs, query, where, QueryConstraint, doc, getDoc } from 'firebase/firestore';
 
 interface Book {
   id: number
@@ -25,6 +25,7 @@ export const useBooksStore = defineStore('books', () => {
   const { $db } = useNuxtApp();
   const booksDB = ref<Book[]>([])
   const isLoading = ref(true)
+  const bookById = ref(null); // Для зберігання одного екземпляра книги
 
   const getBooks = async (params: BookFilterParams = {}) => {
     try {
@@ -52,15 +53,37 @@ export const useBooksStore = defineStore('books', () => {
       const q = query(booksCollection, ...queryConstraints);
 
       const querySnapshot = await getDocs(q);
-      booksDB.value = querySnapshot.docs.map(doc => doc.data());
+      booksDB.value = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...(doc.data() as any)
+      }));
       isLoading.value = false
 
     } catch (err) { }
   }
 
+  const getBookById = async (bookId: string) => {
+    try {
+      const bookRef = doc($db, 'books', bookId);
+
+      const docSnap = await getDoc(bookRef);
+
+      if (docSnap.exists()) {
+        bookById.value = {
+          id: docSnap.id,
+          ...(docSnap.data() as any)
+        };
+      } else {
+        bookById.value = null;
+      }
+    } catch (err) { }
+  };
+
 
   return {
     booksDB,
-    getBooks
+    getBooks,
+    getBookById,
+    bookById
   }
 })

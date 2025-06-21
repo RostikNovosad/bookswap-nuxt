@@ -1,20 +1,19 @@
-import { collection, getDocs } from 'firebase/firestore';
-import { defineStore } from 'pinia'
+import { collection, getDocs, query, orderBy } from 'firebase/firestore';
 
 export const useAuthorsStore = defineStore('authorsStore', () => {
-  console.log('🔥 getAuthors defined in store')
-
   const { $db } = useNuxtApp();
   const authorsDB = ref([])
 
   const getAuthors = async () => {
     try {
-      const authorsCollection = collection($db, 'citys');
-      const querySnapshot = await getDocs(authorsCollection);
+      const authorsCollection = collection($db, 'authors');
+
+      const q = query(authorsCollection, orderBy('id', 'asc'));
+
+      const querySnapshot = await getDocs(q);
+
       authorsDB.value = querySnapshot.docs.map(doc => doc.data());
-    } catch (err) {
-      console.error('Error fetching authors:', err)
-    }
+    } catch (err) { }
   }
 
   return {

@@ -2,7 +2,7 @@
 const { authorsList } = storeToRefs(useAuthorsListStore())
 
 const props = defineProps({
-  id: Number,
+  id: String,
   imageUrl: String,
   title: String,
   author: String,
@@ -40,8 +40,8 @@ const authorTitle = computed(() => {
 
       <p class="text-darkBlue text-sm	line-clamp-1 mb-4 opacity-50">{{ props.description }}</p>
       <p class="text-darkBlue mb-6">Стан книги: <span class="font-medium tracking-widest">{{ props.condition
-          }}/10</span></p>
-      <BBookButton :id="Number(props.id)">Дізнатися більше</BBookButton>
+      }}/10</span></p>
+      <BBookButton :id="props.id">Дізнатися більше</BBookButton>
     </div>
   </div>
 </template>
