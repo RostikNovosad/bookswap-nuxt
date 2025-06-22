@@ -47,9 +47,6 @@ const { userAuthStatus } = storeToRefs(authStore())
       <nuxt-link to="/catalog">
         <BButton> Знайти книгу </BButton>
       </nuxt-link>
-      <nuxt-link to="/add">
-        <BButton> Додати книгу </BButton>
-      </nuxt-link>
       <nuxt-link :to="userAuthStatus ? '/profile' : '/login'">
         <BButton>
           {{ userAuthStatus ? 'Профіль' : 'Вхід' }}
