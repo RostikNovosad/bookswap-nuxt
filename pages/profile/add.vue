@@ -6,73 +6,53 @@
     <form @submit.prevent ref="form" class="px-10 pt-10 pb-16 flex flex-col gap-5">
       <div class="flex flex-col gap-1">
         <label for="title">Назва</label>
-        <input type="text" name="title" id="title" v-model="title" placeholder="Назва книги" minlength="4"
+        <input type="text" name="title" id="title" v-model="newBook.title" placeholder="Назва книги" minlength="4"
           maxlength="50"
-          class="w-full py-2 pl-6 px-3 font-medium border border-yellow rounded-lg  outline-none  truncate" />
+          class="w-full py-2 pl-6 px-3 font-medium border border-yellow rounded-lg outline-none truncate text-black" />
       </div>
 
       <div class="flex flex-col gap-1">
         <label for="author">Автор</label>
-        <select
-          class="w-full py-2 pl-6 px-3 font-medium text-black border border-yellow rounded-lg outline-none truncate"
-          v-model="author">
-          <option :value="undefined">Оберіть автора</option>
-          <option v-for="authorOption in authors" :key="authorOption.key" :value="authorOption.key">{{
-            authorOption.title }}</option>
-        </select>
+        <Dropdown v-model="newBook.author" :options="authorsDB" optionLabel="title" optionValue="id"
+          placeholder="Оберіть автора" class="w-full border border-yellow font-medium"></Dropdown>
       </div>
 
       <div class="flex flex-col gap-1">
         <label for="genre">Жанр</label>
-        <select
-          class="w-full py-2 pl-6 px-3 font-medium text-black border border-yellow rounded-lg outline-none truncate"
-          v-model="genre">
-          <option :value="undefined">Оберіть жанр</option>
-          <option v-for="genreOption in genres" :key="genreOption.key" :value="genreOption.key">{{ genreOption.title }}
-          </option>
-        </select>
+        <Dropdown v-model="newBook.genre" :options="genresDB" optionLabel="title" optionValue="id"
+          placeholder="Оберіть жанр" class="w-full border border-yellow font-medium"></Dropdown>
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <label>Мова</label>
+        <Dropdown v-model="newBook.language" :options="languagesDB" optionLabel="title" optionValue="id"
+          placeholder="Оберіть мову" class="w-full border border-yellow font-medium text-black"></Dropdown>
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <label>Місто</label>
+        <Dropdown v-model="newBook.city" :options="citysDB" optionLabel="title" optionValue="id"
+          placeholder="Оберіть місто" class="w-full border border-yellow font-medium text-black"></Dropdown>
       </div>
 
       <div class="flex flex-col gap-1">
         <label for="description">Опис</label>
-        <textarea name="description" id="description" v-model="description"
+        <textarea name="description" id="description" v-model="newBook.description"
           class="overlay-scroll custom-scroll w-full py-2 pl-6 px-3 font-medium text-black border border-yellow rounded-lg  outline-none resize-none overflow-y-auto  "
           rows="6"></textarea>
       </div>
 
       <div class="flex flex-col gap-1">
         <label for="condition">Стан: {{ conditionShow }}</label>
-        <input type="range" id="condition" v-model="condition" min="1" max="10"
+        <input type="range" id="condition" v-model="newBook.condition" min="1" max="10"
           class="slider w-full py-2 pl-6 px-3 font-medium text-black border border-yellow rounded-lg  outline-none">
       </div>
 
       <div class="flex flex-col gap-1">
-        <label>Мова</label>
-        <select
-          class="w-full py-2 pl-6 px-3 font-medium text-black border border-yellow rounded-lg outline-none truncate"
-          v-model="language">
-          <option :value="undefined">Оберіть мову</option>
-          <option v-for="languageOption in languages" :key="languageOption.key" :value="languageOption.key">{{
-            languageOption.title }}</option>
-        </select>
-      </div>
-
-      <div class="flex flex-col gap-1">
-        <label>Місто</label>
-        <select
-          class="w-full py-2 pl-6 px-3 font-medium text-black border border-yellow rounded-lg outline-none truncate"
-          v-model="city">
-          <option :value="undefined">Оберіть місто</option>
-          <option v-for="cityOption in citys" :key="cityOption.key" :value="cityOption.key">{{ cityOption.title }}
-          </option>
-        </select>
-      </div>
-
-      <div class="flex flex-col gap-1">
         <label for="contact">Контакт</label>
-        <input type="text" name="contact" id="contact" v-model="contact" placeholder="Введіть свій телеграм"
+        <input type="text" name="contact" id="contact" v-model="newBook.contact" placeholder="Введіть свій телеграм"
           minlength="4" maxlength="50"
-          class="w-full py-2 pl-6 px-3 font-medium border border-yellow rounded-lg  outline-none  truncate" />
+          class="w-full py-2 pl-6 px-3 font-medium border border-yellow rounded-lg outline-none truncate text-black" />
       </div>
 
       <div v-if="unCompleteForm" class="flex flex-col gap-1">
@@ -104,33 +84,43 @@
 import { useShowModalStore } from "@/stores/showModal";
 const store = useShowModalStore();
 import axios from "axios";
-import { watch } from "vue";
 
-const { genresList } = storeToRefs(useGenresListStore())
-const { authorsList } = storeToRefs(useAuthorsListStore())
-const { citysList } = storeToRefs(useCitysListStore())
-const { languagesList } = storeToRefs(useLanguagesListStore())
+
+const { getLanguages } = useLanguagesStore()
+const { languagesDB } = storeToRefs(useLanguagesStore())
+
+const { getCitys } = useCitysStore()
+const { citysDB } = storeToRefs(useCitysStore())
+
+const { getAuthors } = useAuthorsStore()
+const { authorsDB } = storeToRefs(useAuthorsStore())
+
+const { getGenres } = useGenresStore()
+const { genresDB } = storeToRefs(useGenresStore())
+
 const { createBook } = useBooksListStore()
 
-const genres = genresList.value;
-const authors = authorsList.value;
-const citys = citysList.value;
-const languages = languagesList.value;
-
-const title = ref();
-const author = ref();
-const genre = ref();
-const description = ref();
-const condition = ref();
-const language = ref();
-const city = ref();
-const contact = ref();
+const newBook = ref({
+  title: null,
+  author: null,
+  genre: null,
+  description: null,
+  condition: null,
+  language: null,
+  city: null,
+  contact: null,
+})
 const successPost = ref(false);
 const errorPost = ref(false);
 const unCompleteForm = ref(false);
 
+const completeForm = computed(() => {
+  return newBook.value.title && newBook.value.description && newBook.value.condition && newBook.value.genre && newBook.value.author && newBook.value.city && newBook.value.language && newBook.value.contact
+})
+
 const checkForm = () => {
-  if (title.value && description.value && condition.value && genre.value && author.value && city.value && language.value && contact.value) {
+  if (completeForm.value) {
+    console.log("completeForm ", completeForm.value);
     handlePostBook()
   } else {
     unCompleteForm.value = true;
@@ -145,31 +135,41 @@ async function handlePostBook() {
 
   const bookData = {
     imageUrl: `/images/books/book-${randomNumber}.jpg`,
-    title: title.value,
-    description: description.value,
-    condition: condition.value,
-    genre: genre.value,
-    author: author.value,
-    city: city.value,
-    language: language.value,
-    contact: contact.value
+    title: newBook.value.title,
+    description: newBook.value.description,
+    condition: newBook.value.condition,
+    genre: newBook.value.genre,
+    author: newBook.value.author,
+    city: newBook.value.city,
+    language: newBook.value.language,
+    contact: newBook.value.contact
   };
 
   await createBook(bookData);
 
-  title.value = '';
-  description.value = '';
-  condition.value = 0;
-  genre.value = '';
-  author.value = '';
-  city.value = '';
-  language.value = '';
-  contact.value = '';
+
+  newBook.value = {
+    title: null,
+    author: null,
+    genre: null,
+    description: null,
+    condition: null,
+    language: null,
+    city: null,
+    contact: null,
+  }
 }
 
 const conditionShow = computed(() => {
-  return condition.value ? condition.value : "Не обрано";
+  return newBook.value.condition ? newBook.value.condition : "Не обрано";
 })
+
+onMounted(async () => {
+  await getLanguages()
+  await getCitys()
+  await getAuthors()
+  await getGenres()
+});
 
 watch(() => store.showModal, (newValue) => {
   if (newValue) {
