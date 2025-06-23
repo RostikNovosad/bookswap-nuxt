@@ -81,10 +81,14 @@
   </div>
 </template>
 <script setup lang="ts">
+import { serverTimestamp } from "firebase/firestore";
 import { useShowModalStore } from "@/stores/showModal";
 const store = useShowModalStore();
-import axios from "axios";
 
+const { $auth } = useNuxtApp();
+const user = $auth.currentUser;
+
+const { addBook } = useBooksStore()
 
 const { getLanguages } = useLanguagesStore()
 const { languagesDB } = storeToRefs(useLanguagesStore())
@@ -115,7 +119,14 @@ const errorPost = ref(false);
 const unCompleteForm = ref(false);
 
 const completeForm = computed(() => {
-  return newBook.value.title && newBook.value.description && newBook.value.condition && newBook.value.genre && newBook.value.author && newBook.value.city && newBook.value.language && newBook.value.contact
+  return newBook.value.title !== null
+    && newBook.value.description !== null
+    && newBook.value.condition !== null
+    && newBook.value.genre !== null
+    && newBook.value.author !== null
+    && newBook.value.city !== null
+    && newBook.value.language !== null
+    && newBook.value.contact !== null
 })
 
 const checkForm = () => {
@@ -142,10 +153,13 @@ async function handlePostBook() {
     author: newBook.value.author,
     city: newBook.value.city,
     language: newBook.value.language,
-    contact: newBook.value.contact
+    contact: newBook.value.contact,
+    wasAdded: serverTimestamp(),
+    userId: user?.uid
+
   };
 
-  await createBook(bookData);
+  await addBook(bookData);
 
 
   newBook.value = {

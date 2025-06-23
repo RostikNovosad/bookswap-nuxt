@@ -1,4 +1,4 @@
-import { collection, getDocs, query, where, QueryConstraint, doc, getDoc } from 'firebase/firestore';
+import { collection, getDocs, query, where, QueryConstraint, doc, getDoc, addDoc } from 'firebase/firestore';
 
 interface Book {
   id: number
@@ -25,7 +25,7 @@ export const useBooksStore = defineStore('books', () => {
   const { $db } = useNuxtApp();
   const booksDB = ref<Book[]>([])
   const isLoading = ref(true)
-  const bookById = ref(null); // Для зберігання одного екземпляра книги
+  const bookById = ref(null);
 
   const getBooks = async (params: BookFilterParams = {}) => {
     try {
@@ -79,11 +79,23 @@ export const useBooksStore = defineStore('books', () => {
     } catch (err) { }
   };
 
+  const addBook = async (book: any) => {
+    try {
+      const booksCollection = collection($db, 'books');
+      const docRef = await addDoc(booksCollection, book);
+      console.log("Книгу успішно додано з ID: ", docRef.id);
+    } catch (error) {
+      console.error("Помилка при додаванні книги: ", error);
+    }
+
+  }
+
 
   return {
     booksDB,
     getBooks,
     getBookById,
-    bookById
+    bookById,
+    addBook
   }
 })
