@@ -7,10 +7,16 @@
       </nuxt-link> -->
     <!-- <BButton @click="logout()" class="ml-auto">Вихід</BButton> -->
 
+
     <!-- </div> -->
     <div class="text-darkBlue flex flex-col gap-3 flex-grow mt-8">
-      <BSectionTitle class="text-2xl">Вітаємо! {{ user?.email }}</BSectionTitle>
+      <div class="flex justify-between items-center">
 
+        <BSectionTitle class="text-2xl">Вітаємо! {{ user?.email }}</BSectionTitle>
+        <nuxt-link to="/profile/add">
+          <BButton> Додати книгу </BButton>
+        </nuxt-link>
+      </div>
       <div class="mt-8 flex flex-col gap-4">
 
         <p class="text-darkBlue text-xl font-medium">Дякуємо, що обрали Bookswap!</p>

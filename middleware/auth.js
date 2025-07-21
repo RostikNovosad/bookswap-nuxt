@@ -1,12 +1,10 @@
-export default defineNuxtRouteMiddleware((to, from) => {
-  const { $auth } = useNuxtApp();
-  const user = $auth.currentUser;
+// middleware/auth.ts
+import { useSupabaseUser } from '#imports';
+
+export default defineNuxtRouteMiddleware(() => {
+  const user = useSupabaseUser();
 
   if (!user && to.path.startsWith('/profile')) {
     return navigateTo('/login');
-  }
-
-  if (user && (to.path === '/login')) {
-    return navigateTo('/profile');
   }
 });
