@@ -83,10 +83,6 @@
   </div>
 </template>
 <script setup lang="ts">
-definePageMeta({
-  middleware: ['auth']
-})
-
 import { useShowModalStore } from "@/stores/showModal";
 const store = useShowModalStore();
 

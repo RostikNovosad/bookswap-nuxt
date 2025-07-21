@@ -32,8 +32,4 @@
 
 const { user } = storeToRefs(authStore())
 const { logout } = authStore()
-
-definePageMeta({
-  middleware: ['auth']
-});
 </script>
