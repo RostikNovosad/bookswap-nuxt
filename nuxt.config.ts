@@ -4,22 +4,17 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   ssr: false,
 
+  modules: ['@pinia/nuxt', '@nuxtjs/tailwindcss', 'nuxt-swiper', '@formkit/auto-animate/nuxt', '@nuxtjs/supabase'],
 
   runtimeConfig: {
     public: {
       baseURL: process.env.NUXT_PUBLIC_BASE_URL,
-      firebaseApiKey: process.env.NUXT_PUBLIC_FIREBASE_API_KEY,
-      firebaseAuthDomain: process.env.NUXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-      firebaseProjectId: process.env.NUXT_PUBLIC_FIREBASE_PROJECT_ID,
-      firebaseStorageBucket: process.env.NUXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-      firebaseMessagingSenderId: process.env.NUXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-      firebaseAppID: process.env.NUXT_PUBLIC_FIREBASE_APP_ID,
+      supabaseUrl: process.env.SUPABASE_URL,
+      supabaseKey: process.env.SUPABASE_KEY,
     }
   },
 
-  plugins: [
-    '~/plugins/firebase.client.js'
-  ],
+  plugins: [],
 
   components: {
     dirs: [
@@ -35,5 +30,9 @@ export default defineNuxtConfig({
       },
     ],
   },
-  modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt', 'nuxt-swiper', '@formkit/auto-animate/nuxt'],
+
+  supabase: {
+    redirect: false
+  }
+
 });
