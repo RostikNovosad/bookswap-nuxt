@@ -40,7 +40,7 @@ export const authStore = defineStore('auth', () => {
           throw signInError;
         }
 
-        navigateTo('/profile');
+        router.push('/profile');
       }
     } catch (err: any) {
       console.error('Auth error:', err.message);
