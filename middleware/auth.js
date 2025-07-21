@@ -4,7 +4,7 @@ import { useSupabaseUser } from '#imports';
 export default defineNuxtRouteMiddleware(() => {
   const user = useSupabaseUser();
 
-  if (!user && to.path.startsWith('/profile')) {
+  if (to.path.startsWith('/profile') && !user.value) {
     return navigateTo('/login');
   }
 });
