@@ -1,89 +1,93 @@
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, User as FirebaseUser } from 'firebase/auth';
-
+import { defineStore } from 'pinia';
+import { useRouter } from 'vue-router';
+import { useSupabaseClient, useSupabaseUser } from '#imports';
 
 export const authStore = defineStore('auth', () => {
-
-  const { $auth } = useNuxtApp();
+  const supabase = useSupabaseClient();
   const router = useRouter();
-  const user = ref<FirebaseUser | null>(null);
 
-  const error = ref(null);
-  const isRegistering = ref(false)
+  const user = useSupabaseUser();
 
-  const userAuthStatus = ref(false)
+  const error = ref<string | null>(null);
+  const isRegistering = ref(false);
 
-  const handleLoginButton = async (email: string, password: string) => {
+  const userAuthStatus = computed(() => !!user.value);
+
+  const handleAuth = async (email: string, password: string) => {
     error.value = null;
 
     try {
       if (isRegistering.value) {
-        await createUserWithEmailAndPassword($auth, email, password);
-        alert('Реєстрація успішна! Тепер ви можете увійти.');
+        const { error: signUpError } = await supabase.auth.signUp({
+          email: email,
+          password: password,
+        });
+
+        if (signUpError) {
+          throw signUpError;
+        }
+
+        alert('Реєстрація успішна! Перевірте свою пошту для підтвердження. Після підтвердження ви зможете увійти.');
         isRegistering.value = false;
-        router.push('/profile');
 
       } else {
-        await signInWithEmailAndPassword($auth, email, password);
-        userAuthStatus.value = true;
+        const { error: signInError } = await supabase.auth.signInWithPassword({
+          email: email,
+          password: password,
+        });
+
+        if (signInError) {
+          throw signInError;
+        }
+
         router.push('/profile');
       }
-    } catch (err) {
-      console.error('Auth error:', err.code, err.message);
-      switch (err.code) {
-        case 'auth/invalid-email':
-          error.value = 'Неправильний формат email.';
-          break;
-        case 'auth/user-disabled':
-          error.value = 'Користувач заблокований.';
-          break;
-        case 'auth/user-not-found':
-          error.value = 'Користувача не знайдено.';
-          break;
-        case 'auth/wrong-password':
+    } catch (err: any) {
+      console.error('Auth error:', err.message);
+      switch (err.message) {
+        case 'Invalid login credentials':
           error.value = 'Неправильний email або пароль.';
           break;
-        case 'auth/email-already-in-use':
-          error.value = 'Цей email вже використовується.';
+        case 'Email already registered':
+          error.value = 'Цей email вже зареєстрований.';
           break;
-        case 'auth/invalid-credential':
-          error.value = 'Невірні дані для входу.';
+        case 'Email not confirmed':
+          error.value = 'Будь ласка, підтвердьте свою пошту.';
           break;
-        case 'auth/weak-password':
-          error.value = 'Пароль занадто слабкий (повинен бути не менше 6 символів).';
+        case 'User already registered':
+          error.value = 'Користувач з таким email вже зареєстрований.';
+          break;
+        case 'Invalid email or password':
+          error.value = 'Невірний email або пароль.';
           break;
         default:
-          error.value = 'Виникла помилка. Спробуйте ще раз.';
+          error.value = err.message || 'Виникла помилка. Спробуйте ще раз.';
           break;
       }
-    }
-  }
-
-  const logout = async () => {
-    try {
-      await signOut($auth);
-      router.push('/');
-    } catch (error) {
-      console.error('Помилка виходу:', error);
     }
   };
 
-  onAuthStateChanged($auth, (firebaseUser) => {
-    user.value = firebaseUser;
+  const logout = async () => {
+    try {
+      const { error: signOutError } = await supabase.auth.signOut();
 
-    if (user.value) {
-      userAuthStatus.value = true
+      if (signOutError) {
+        throw signOutError;
+      }
+
+      router.push('/');
+    } catch (err: any) {
+      console.error('Помилка виходу:', err.message);
+      error.value = err.message || 'Виникла помилка при виході.';
     }
-    else {
-      userAuthStatus.value = false
-    }
-  })
+  };
 
   return {
     user,
     error,
     isRegistering,
     userAuthStatus,
-    handleLoginButton,
-    logout
-  }
-})
+    handleAuth,
+    logout,
+  };
+});

@@ -1,23 +1,31 @@
-import { collection, getDocs, query, orderBy } from 'firebase/firestore';
+import { defineStore } from 'pinia';
+import { useSupabaseClient } from '#imports';
 
-export const useAuthorsStore = defineStore('authorsStore', () => {
-  const { $db } = useNuxtApp();
-  const authorsDB = ref([])
+export const useAuthorsStore = defineStore('authors', () => {
+  const supabase = useSupabaseClient();
+
+  const authorsDB = ref([]);
 
   const getAuthors = async () => {
     try {
-      const authorsCollection = collection($db, 'authors');
+      const { data, error } = await supabase
+        .from('authors')
+        .select('*')
+        .order('id', { ascending: true });
 
-      const q = query(authorsCollection, orderBy('id', 'asc'));
+      if (error) {
+        console.error('Помилка при отриманні авторів з Supabase:', error.message);
+        return [];
+      }
 
-      const querySnapshot = await getDocs(q);
-
-      authorsDB.value = querySnapshot.docs.map(doc => doc.data());
-    } catch (err) { }
-  }
+      authorsDB.value = data;
+    } catch (err) {
+      console.error('Загальна помилка в getAuthors:', err);
+    }
+  };
 
   return {
     authorsDB,
     getAuthors,
-  }
-})
+  };
+});

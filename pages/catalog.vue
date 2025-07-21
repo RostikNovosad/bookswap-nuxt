@@ -15,7 +15,7 @@
           placeholder="Оберіть мову" class="w-full w-[200px]" showClear></Dropdown>
       </div>
 
-      <div class="flex flex-col gap-5">
+      <div class="flex flex-col gap-5 w-full">
         <BSectionTitle>Всі книги, готові до нового життя</BSectionTitle>
         <div v-if="isLoading" class="text-xl mt-5 text-darkBlue">Завантаження...</div>
         <div v-if="booksDB && booksDB.length === 0" class="text-xl mt-5 text-darkBlue">На жаль, за даним запитом
@@ -28,6 +28,10 @@
           <BBookCard v-for="book in booksDB" :key="book.id" :id="book.id" :imageUrl="book.imageUrl" :title="book.title"
             :description="book.description" :condition="book.condition" :author="book.author" cardDirection="col" />
         </ul>
+        <div v-if="booksDB && booksDB.length < totalCount && !params.showAll" class="flex justify-center gap-4">
+          <BButton @click="showMore">Показати ще 12</BButton>
+          <BButton @click="showAll">Показати всі</BButton>
+        </div>
       </div>
     </div>
   </section>
@@ -36,7 +40,7 @@
 
 <script setup>
 const { getBooks } = useBooksStore()
-const { booksDB, isLoading } = storeToRefs(useBooksStore())
+const { booksDB, isLoading, totalCount } = storeToRefs(useBooksStore())
 
 const { getLanguages } = useLanguagesStore()
 const { languagesDB } = storeToRefs(useLanguagesStore())
@@ -53,8 +57,22 @@ const { genresDB } = storeToRefs(useGenresStore())
 const params = ref({
   authorId: null,
   genreId: null,
-  languageId: null
+  languageId: null,
+  cityId: null,
+  page: 1,
+  perPage: 12,
+  showAll: false
 })
+
+const showMore = () => {
+  params.value.perPage += 12;
+  getBooks(params.value);
+};
+
+const showAll = () => {
+  params.value.showAll = true;
+  getBooks(params.value);
+};
 
 
 onMounted(async () => {

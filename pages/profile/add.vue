@@ -59,10 +59,12 @@
         <p class="text-red-500	text-center">Форма заповнена не повністю!</p>
       </div>
 
-      <!--      <div class="">-->
-      <!--        <label for="photo">Фото</label>-->
-      <!--        <input type="file" class="w-full py-2 pl-6 px-3 font-medium text-black border border-yellow rounded-lg outline-none" accept="image/png, image/jpeg">-->
-      <!--      </div>-->
+      <div class="">
+        <label for="photo">Фото</label>
+        <input type="file" @change="handleFileUpload"
+          class="w-full py-2 pl-6 px-3 font-medium text-black border border-yellow rounded-lg outline-none"
+          accept="image/png, image/jpeg">
+      </div>
 
       <BButton @click="checkForm">Відправити</BButton>
 
@@ -81,12 +83,12 @@
   </div>
 </template>
 <script setup lang="ts">
-import { serverTimestamp } from "firebase/firestore";
+definePageMeta({
+  middleware: ['auth']
+})
+
 import { useShowModalStore } from "@/stores/showModal";
 const store = useShowModalStore();
-
-const { $auth } = useNuxtApp();
-const user = $auth.currentUser;
 
 const { addBook } = useBooksStore()
 
@@ -102,7 +104,8 @@ const { authorsDB } = storeToRefs(useAuthorsStore())
 const { getGenres } = useGenresStore()
 const { genresDB } = storeToRefs(useGenresStore())
 
-const { createBook } = useBooksListStore()
+const supabase = useSupabaseClient();
+const user = useSupabaseUser();
 
 const newBook = ref({
   title: null,
@@ -118,6 +121,8 @@ const successPost = ref(false);
 const errorPost = ref(false);
 const unCompleteForm = ref(false);
 
+const selectedFile = ref(null);
+
 const completeForm = computed(() => {
   return newBook.value.title !== null
     && newBook.value.description !== null
@@ -129,9 +134,17 @@ const completeForm = computed(() => {
     && newBook.value.contact !== null
 })
 
+const handleFileUpload = (event: Event) => {
+  const target = event.target as HTMLInputElement;
+  if (target.files && target.files.length > 0) {
+    selectedFile.value = target.files[0];
+  } else {
+    selectedFile.value = null;
+  }
+};
+
 const checkForm = () => {
   if (completeForm.value) {
-    console.log("completeForm ", completeForm.value);
     handlePostBook()
   } else {
     unCompleteForm.value = true;
@@ -141,36 +154,77 @@ const closeModal = () => {
   return store.showModal = false;
 }
 
+const uploadImageAndGetUrl = async (file: File) => {
+  if (!file) {
+    throw new Error("No file selected for upload.");
+  }
+
+  const filePath = `book-covers/${Date.now()}-${file.name}`;
+
+  try {
+    const { data, error } = await supabase.storage
+      .from('books-images')
+      .upload(filePath, file, {
+        cacheControl: '3600',
+        upsert: false
+      });
+
+    if (error) {
+      throw error;
+    }
+
+    const { data: publicUrlData } = supabase.storage
+      .from('books-images')
+      .getPublicUrl(filePath);
+
+    if (publicUrlData && publicUrlData.publicUrl) {
+      console.log('URL завантаженого фото:', publicUrlData.publicUrl);
+      return publicUrlData.publicUrl;
+    }
+  } catch (error: any) {
+    console.error("Помилка при завантаженні фото в Supabase Storage:", error.message);
+    throw error;
+  }
+};
+
 async function handlePostBook() {
-  const randomNumber = Math.floor(Math.random() * 9) + 1;
 
-  const bookData = {
-    imageUrl: `/images/books/book-${randomNumber}.jpg`,
-    title: newBook.value.title,
-    description: newBook.value.description,
-    condition: newBook.value.condition,
-    genre: newBook.value.genre,
-    author: newBook.value.author,
-    city: newBook.value.city,
-    language: newBook.value.language,
-    contact: newBook.value.contact,
-    wasAdded: serverTimestamp(),
-    userId: user?.uid
+  try {
+    let imageUrl = null;
+    if (selectedFile.value) {
+      imageUrl = await uploadImageAndGetUrl(selectedFile.value);
+    }
+    const bookData = {
+      imageUrl: imageUrl,
+      title: newBook.value.title,
+      description: newBook.value.description,
+      condition: newBook.value.condition,
+      genreId: newBook.value.genre,
+      authorId: newBook.value.author,
+      cityId: newBook.value.city,
+      languageId: newBook.value.language,
+      contact: newBook.value.contact,
+      userId: user.value?.id
+    };
 
-  };
+    await addBook(bookData);
 
-  await addBook(bookData);
-
-
-  newBook.value = {
-    title: null,
-    author: null,
-    genre: null,
-    description: null,
-    condition: null,
-    language: null,
-    city: null,
-    contact: null,
+    newBook.value = {
+      title: null,
+      author: null,
+      genre: null,
+      description: null,
+      condition: null,
+      language: null,
+      city: null,
+      contact: null,
+    }
+    selectedFile.value = null;
+    if (document.getElementById('photo')) {
+      (document.getElementById('photo') as HTMLInputElement).value = '';
+    }
+  } catch (error) {
+    console.error("Помилка при додаванні книги або фото: ", error);
   }
 }
 

@@ -1,24 +1,31 @@
-import { collection, getDocs, query, orderBy } from 'firebase/firestore';
+import { defineStore } from 'pinia';
+import { useSupabaseClient } from '#imports';
 
 export const useCitysStore = defineStore('citys', () => {
-  const { $db } = useNuxtApp();
-  const citysDB = ref([])
+  const supabase = useSupabaseClient();
+
+  const citysDB = ref([]);
 
   const getCitys = async () => {
     try {
-      const citysCollection = collection($db, 'citys');
+      const { data, error } = await supabase
+        .from('citys')
+        .select('*')
+        .order('id', { ascending: true });
 
-      const q = query(citysCollection, orderBy('id', 'asc'));
+      if (error) {
+        console.error('Помилка при отриманні міст з Supabase:', error.message);
+        return [];
+      }
 
-      const querySnapshot = await getDocs(q);
-
-      citysDB.value = querySnapshot.docs.map(doc => doc.data());
-    } catch (err) { }
-  }
-
+      citysDB.value = data;
+    } catch (err) {
+      console.error('Загальна помилка в getCitys:', err);
+    }
+  };
 
   return {
     citysDB,
     getCitys
-  }
-})
+  };
+});

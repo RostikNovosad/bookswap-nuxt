@@ -1,23 +1,31 @@
-import { collection, getDocs, query, orderBy } from 'firebase/firestore';
+import { defineStore } from 'pinia';
+import { useSupabaseClient } from '#imports';
 
 export const useLanguagesStore = defineStore('languages', () => {
-  const { $db } = useNuxtApp();
-  const languagesDB = ref([])
+  const supabase = useSupabaseClient();
+
+  const languagesDB = ref([]);
 
   const getLanguages = async () => {
     try {
-      const languagesCollection = collection($db, 'languages');
+      const { data, error } = await supabase
+        .from('languages')
+        .select('*')
+        .order('id', { ascending: true });
 
-      const q = query(languagesCollection, orderBy('id', 'asc'));
+      if (error) {
+        console.error('Помилка при отриманні мов з Supabase:', error.message);
+        return [];
+      }
 
-      const querySnapshot = await getDocs(q);
-
-      languagesDB.value = querySnapshot.docs.map(doc => doc.data());
-    } catch (err) { }
-  }
+      languagesDB.value = data;
+    } catch (err) {
+      console.error('Загальна помилка в getLanguages:', err);
+    }
+  };
 
   return {
     languagesDB,
     getLanguages
-  }
-})
+  };
+});

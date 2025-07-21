@@ -1,23 +1,29 @@
-import { collection, getDocs, query, orderBy } from 'firebase/firestore';
+import { defineStore } from 'pinia';
+import { useSupabaseClient } from '#imports';
 
 export const useGenresStore = defineStore('genres', () => {
-  const { $db } = useNuxtApp();
-  const genresDB = ref([])
+  const supabase = useSupabaseClient();
+
+  const genresDB = ref([]);
 
   const getGenres = async () => {
     try {
-      const genresCollection = collection($db, 'genres');
-
-      const q = query(genresCollection, orderBy('id', 'asc'));
-
-      const querySnapshot = await getDocs(q);
-
-      genresDB.value = querySnapshot.docs.map(doc => doc.data());
-    } catch (err) { }
-  }
+      const { data, error } = await supabase
+        .from('genres')
+        .select('*')
+        .order('id', { ascending: true });
+      if (error) {
+        console.error('Помилка при отриманні жанрів з Supabase:', error.message);
+        return [];
+      }
+      genresDB.value = data;
+    } catch (err) {
+      console.error('Загальна помилка в getGenres:', err);
+    }
+  };
 
   return {
     genresDB,
     getGenres
-  }
-})
+  };
+});

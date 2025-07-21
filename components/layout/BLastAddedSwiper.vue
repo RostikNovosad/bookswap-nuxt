@@ -1,12 +1,17 @@
 <script setup lang="ts">
-const { getBooks } = useBooksListStore()
-const { booksList } = storeToRefs(useBooksListStore())
+const { getBooks } = useBooksStore()
+const { booksDB } = storeToRefs(useBooksStore())
 
 const books = ref();
 
+const params = ref({
+  page: 1,
+  perPage: 6
+})
+
 onMounted(async () => {
-  await getBooks();
-  books.value = booksList.value;
+  await getBooks(params.value);
+  books.value = booksDB.value;
 });
 
 
@@ -58,7 +63,7 @@ const swiper = useSwiper(containerRef, {
 
 <template>
   <ClientOnly>
-    <div v-if="booksList.length === 0">Loading...</div>
+    <div v-if="booksDB.length === 0">Loading...</div>
 
     <swiper-container ref="containerRef" class="flex gap-10 overflow-x-hidden">
       <swiper-slide v-for="(book, idx) in books" :key="idx" class="pb-10">

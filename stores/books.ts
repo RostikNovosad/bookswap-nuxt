@@ -1,101 +1,139 @@
-import { collection, getDocs, query, where, QueryConstraint, doc, getDoc, addDoc } from 'firebase/firestore';
+import { defineStore } from 'pinia';
+import { supabase } from '#imports';
 
 interface Book {
-  id: number
-  imageUrl: string
+  id: string
+  imageUrl: string | null
   title: string
   description: string
-  condition: number
+  condition: string
   contact: string
-  authorId: number
-  cityId: number
-  genreId: number
+  author: string | null
+  city: string | null
+  genre: string | null
+  language: string | null
+  created_at: string
+  user_id: string | null
 }
 
 interface BookFilterParams {
-  authorId?: number;
-  cityId?: number;
-  genreId?: number;
-  languageId?: number;
-  condition?: number;
-  title?: string;
+  authorId?: number
+  cityId?: number
+  genreId?: number
+  languageId?: number
+  condition?: number
+  title?: string
+  page?: number
+  perPage?: number
+  showAll?: boolean
 }
 
 export const useBooksStore = defineStore('books', () => {
-  const { $db } = useNuxtApp();
-  const booksDB = ref<Book[]>([])
-  const isLoading = ref(true)
-  const bookById = ref(null);
+
+  const booksDB = ref<Book[]>([]);
+  const isLoading = ref(true);
+  const bookById = ref<Book | null>(null);
+  const totalCount = ref(0);
 
   const getBooks = async (params: BookFilterParams = {}) => {
+    isLoading.value = true;
     try {
-      const booksCollection = collection($db, 'books');
-      const queryConstraints: QueryConstraint[] = [];
+      let query = supabase
+        .from('books')
+        .select('*', { count: 'exact' });
 
-      if (typeof params.authorId === 'number') {
-        queryConstraints.push(where('authorId', '==', params.authorId));
+      if (params.authorId || params.authorId == 0) {
+        query = query.eq('authorId', params.authorId);
       }
-      if (typeof params.cityId === 'number') {
-        queryConstraints.push(where('cityId', '==', params.cityId));
+      if (params.cityId || params.cityId == 0) {
+        query = query.eq('cityId', params.cityId);
       }
-      if (typeof params.genreId === 'number') {
-        queryConstraints.push(where('genreId', '==', params.genreId));
+      if (params.genreId || params.genreId == 0) {
+        query = query.eq('genreId', params.genreId);
       }
-      if (typeof params.languageId === 'number') {
-        queryConstraints.push(where('languageId', '==', params.languageId));
+      if (params.languageId || params.languageId == 0) {
+        query = query.eq('languageId', params.languageId);
       }
-      if (typeof params.condition === 'number') {
-        queryConstraints.push(where('condition', '==', params.condition));
+      if (params.condition) {
+        query = query.eq('condition', params.condition);
       }
-      if (typeof params.title === 'string' && params.title.trim() !== '') {
-        queryConstraints.push(where('title', '==', params.title));
+      if (params.title && params.title.trim() !== '') {
+        query = query.ilike('title', `%${params.title.trim()}%`);
       }
-      const q = query(booksCollection, ...queryConstraints);
 
-      const querySnapshot = await getDocs(q);
-      booksDB.value = querySnapshot.docs.map(doc => ({
-        id: doc.id,
-        ...(doc.data() as any)
-      }));
-      isLoading.value = false
+      const perPage = params.perPage || 12;
+      const page = params.page || 1;
+      const from = (page - 1) * perPage;
+      const to = from + perPage - 1;
 
-    } catch (err) { }
-  }
+      if (!params.showAll) {
+        query = query.range(from, to);
+      }
+
+      const { data, count, error } = await query;
+
+      if (error) {
+        throw error;
+      }
+
+      booksDB.value = data as Book[];
+      isLoading.value = false;
+      totalCount.value = count ?? 0;
+
+
+    } catch (err) {
+      console.error("Помилка при отриманні книг:", err);
+      isLoading.value = false;
+    }
+  };
 
   const getBookById = async (bookId: string) => {
     try {
-      const bookRef = doc($db, 'books', bookId);
+      const { data, error } = await supabase
+        .from('books')
+        .select('*')
+        .eq('id', bookId)
+        .single();
 
-      const docSnap = await getDoc(bookRef);
-
-      if (docSnap.exists()) {
-        bookById.value = {
-          id: docSnap.id,
-          ...(docSnap.data() as any)
-        };
-      } else {
-        bookById.value = null;
+      if (error) {
+        throw error;
       }
-    } catch (err) { }
+
+      bookById.value = data as Book;
+
+    } catch (err) {
+      console.error("Помилка при отриманні книги за ID:", err);
+      bookById.value = null;
+    }
   };
 
-  const addBook = async (book: any) => {
+  const addBook = async (bookData: Partial<Book>) => {
     try {
-      const booksCollection = collection($db, 'books');
-      const docRef = await addDoc(booksCollection, book);
-      console.log("Книгу успішно додано з ID: ", docRef.id);
+      const { data, error } = await supabase
+        .from('books')
+        .insert([bookData])
+        .select();
+
+      if (error) {
+        throw error;
+      }
+
+      console.log("Книгу успішно додано:", data[0]);
+      return data[0] as Book;
+
     } catch (error) {
       console.error("Помилка при додаванні книги: ", error);
+      throw error;
     }
-
-  }
-
+  };
 
   return {
     booksDB,
+    isLoading,
     getBooks,
     getBookById,
     bookById,
-    addBook
-  }
-})
+    addBook,
+    totalCount
+  };
+});

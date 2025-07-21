@@ -1,5 +1,4 @@
 <script setup lang="ts">
-const { authorsList } = storeToRefs(useAuthorsListStore())
 
 const props = defineProps({
   id: String,
