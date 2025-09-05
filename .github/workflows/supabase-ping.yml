@@ -12,6 +12,6 @@ jobs:
     steps:
       - name: Send request to Supabase
         run: |
-          curl -s -X GET "https://jvwzrlzemuvhwvshhuid.supabase.co/rest/v1/books?select=*&limit=1" \
+          curl -s -X GET "https://jvwzrlzemuvhwvshhuid.supabase.co/rest/v1/books?select=*&offset=0&limit=12" \
           -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
           -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}"
